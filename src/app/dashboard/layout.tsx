@@ -31,7 +31,7 @@ export default async function DashboardLayout({
         <SidebarInset>
           <Header />
           {/* page main content */}
-          {user ? children : <NoAccessPage />}
+          {user && user.status === 'ACTIVE' ? children : <NoAccessPage />}
           {/* page main content ends */}
         </SidebarInset>
       </SidebarProvider>
