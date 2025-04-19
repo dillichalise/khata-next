@@ -7,6 +7,7 @@ import { cookies } from 'next/headers';
 import { getAuthenticatedUserData } from '@/lib/get-authenticated-user';
 import { auth } from '@clerk/nextjs/server';
 import NoAccessPage from '@/app/dashboard/no-access/page';
+import { UserStatusEnum } from '@/enums';
 
 export const metadata: Metadata = {
   title: 'Next Shadcn Dashboard Starter',
@@ -21,8 +22,8 @@ export default async function DashboardLayout({
   // Persisting the sidebar state in the cookie.
   const cookieStore = await cookies();
   const defaultOpen = cookieStore.get('sidebar_state')?.value === 'true';
-  const { userId } = await auth();
-  const user = userId ? await getAuthenticatedUserData(userId) : null;
+  const { userId: clerkUserId } = await auth();
+  const user = clerkUserId ? await getAuthenticatedUserData(clerkUserId) : null;
 
   return (
     <KBar>
@@ -31,7 +32,11 @@ export default async function DashboardLayout({
         <SidebarInset>
           <Header />
           {/* page main content */}
-          {user && user.status === 'ACTIVE' ? children : <NoAccessPage />}
+          {user && user.status === UserStatusEnum.ACTIVE ? (
+            children
+          ) : (
+            <NoAccessPage />
+          )}
           {/* page main content ends */}
         </SidebarInset>
       </SidebarProvider>
