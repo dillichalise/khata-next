@@ -1,3 +1,2 @@
-import * as users from './queries';
-
-export { users };
+export * from './queries';
+export * from './mutation';

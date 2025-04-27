@@ -34,7 +34,7 @@ enum TransactionAction {
 
 model User {
   id           Int           @id @default(autoincrement())
-  clerkUserId  String        @map("clerk_user_id") // Clerk's userId
+  clerkUserId  String        @unique @map("clerk_user_id") // Clerk's userId
   firstName    String        @map("first_name")
   lastName     String        @map("last_name")
   email        String        @unique

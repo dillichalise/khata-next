@@ -1,5 +1,5 @@
-import { db } from '@/db/lib';
+import { core } from '@/db/core';
 
 export async function getAuthenticatedUserData(clerkUserId: string) {
-  return await db.users.getUserByClerkUserId(clerkUserId);
+  return await core.user.getUserByClerkId(clerkUserId);
 }
