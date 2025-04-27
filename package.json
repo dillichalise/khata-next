@@ -124,6 +124,6 @@
     "@types/react-dom": "19.0.2"
   },
   "prisma": {
-    "schema": "./src/db/prisma/schema.prisma"
+    "schema": "prisma/schema.prisma"
   }
 }
