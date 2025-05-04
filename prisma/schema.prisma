@@ -40,7 +40,7 @@ model User {
   email        String        @unique
   phoneNumber  String        @unique @map(name: "phone_number")
   role         UserType      @default(USER)
-  status       UserStatus    @default(ACTIVE)
+  status       UserStatus    @default(INACTIVE)
   createdAt    DateTime      @default(now()) @map("created_at")
   updatedAt    DateTime      @updatedAt @map("updated_at")
   transactions Transaction[]

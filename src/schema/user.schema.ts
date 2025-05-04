@@ -1,8 +1,9 @@
+import { UserStatus, UserType } from '@prisma/client';
 import { z } from 'zod';
 
 // Define enums for role and status
-const UserType = z.enum(['USER', 'ADMIN']);
-const UserStatus = z.enum(['ACTIVE', 'INACTIVE']);
+const UserTypeEnum = z.enum([UserType.USER, UserType.ADMIN]);
+const UserStatusEnum = z.enum([UserStatus.ACTIVE, UserStatus.INACTIVE]);
 
 // Zod schema for the User model
 const userSchema = z.object({
@@ -12,8 +13,8 @@ const userSchema = z.object({
   lastName: z.string(),
   email: z.string().email(),
   phoneNumber: z.string(),
-  role: UserType.optional().default('USER'),
-  status: UserStatus.optional().default('ACTIVE'),
+  role: UserTypeEnum.optional().default(UserType.USER),
+  status: UserStatusEnum.optional().default(UserStatus.INACTIVE),
   createdAt: z.date().optional(),
   updatedAt: z.date().optional(),
   transactions: z.array(z.any()).optional()

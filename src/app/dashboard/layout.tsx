@@ -7,7 +7,7 @@ import { cookies } from 'next/headers';
 import { getAuthenticatedUserData } from '@/lib/get-authenticated-user';
 import { auth } from '@clerk/nextjs/server';
 import NoAccessPage from '@/app/dashboard/no-access/page';
-import { UserStatusEnum } from '@/enums';
+import { UserStatus } from '@prisma/client';
 
 export const metadata: Metadata = {
   title: 'Next Shadcn Dashboard Starter',
@@ -32,7 +32,7 @@ export default async function DashboardLayout({
         <SidebarInset>
           <Header />
           {/* page main content */}
-          {user && user.status === UserStatusEnum.ACTIVE ? (
+          {user && user.status === UserStatus.ACTIVE ? (
             children
           ) : (
             <NoAccessPage />
