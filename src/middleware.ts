@@ -7,8 +7,16 @@ const isProtectedRoute = createRouteMatcher([
 ]);
 
 export default clerkMiddleware(async (auth, req: NextRequest) => {
-  if (isProtectedRoute(req)) await auth.protect();
+  try {
+    if (isProtectedRoute(req)) {
+      await auth.protect();
+    }
+  } catch (error) {
+    console.error('Middleware error:', error);
+    return new Response('Middleware Error', { status: 500 });
+  }
 });
+
 export const config = {
   matcher: [
     // Skip Next.js internals and all static files, unless found in search params
