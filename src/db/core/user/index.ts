@@ -8,3 +8,7 @@ export function getUserByClerkId(clerkUserId: string) {
 export function createUser(user: TCreateUserSchema) {
   return db.users.createUser(user);
 }
+
+export function getAllUsers() {
+  return db.users.getAllUsers();
+}

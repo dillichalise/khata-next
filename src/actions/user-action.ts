@@ -16,3 +16,9 @@ export const getUserAction = actionClient
   .action(async ({ parsedInput }) => {
     return core.user.getUserByClerkId(parsedInput.clerkUserId);
   });
+
+export const getAllUsersAction = actionClient
+  .schema(z.void())
+  .action(async () => {
+    return core.user.getAllUsers();
+  });
