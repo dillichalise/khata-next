@@ -16,15 +16,18 @@ import {
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { createUserAction } from '@/actions';
-import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
+import { useAction } from 'next-safe-action/hooks';
 
 export default function UserForm({
   initialData,
   pageTitle
 }: {
-  initialData: TCreateUserSchema;
+  initialData: TCreateUserSchema | null;
   pageTitle: string;
 }) {
+  const router = useRouter();
+
   const defaultValues = {
     firstName: initialData?.firstName || '',
     lastName: initialData?.lastName || '',
@@ -39,11 +42,12 @@ export default function UserForm({
     values: defaultValues
   });
 
+  const { executeAsync, isExecuting, isPending } = useAction(createUserAction);
+
   async function onSubmit(submitValue: TCreateUserSchema) {
-    await createUserAction(submitValue)
-      .then((res) => {
-        console.info('Register Success', res);
-        redirect('/dashboard');
+    executeAsync(submitValue)
+      .then(() => {
+        router.push('/dashboard/user');
       })
       .catch((err) => {
         console.error('Error while registering user', err);
@@ -61,6 +65,20 @@ export default function UserForm({
       <CardContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
+            <FormField
+              control={form.control}
+              name='clerkUserId'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Clerk User Id</FormLabel>
+                  <FormControl>
+                    <Input {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
             <FormField
               control={form.control}
               name='firstName'
@@ -117,7 +135,13 @@ export default function UserForm({
               )}
             />
 
-            <Button type='submit'>Register</Button>
+            <Button
+              className='bg-blue-700 hover:cursor-pointer hover:bg-blue-900'
+              disabled={isPending || isExecuting}
+              type='submit'
+            >
+              Register
+            </Button>
           </form>
         </Form>
       </CardContent>
