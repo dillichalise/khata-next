@@ -21,7 +21,7 @@ export const columns: ColumnDef<TTransactionSchema>[] = [
   {
     accessorKey: 'date',
     header: 'Date',
-    cell: ({ row }) => format(row.original.date, 'PP')
+    cell: ({ row }) => row.original.date && format(row.original.date, 'PP')
   },
   {
     accessorKey: 'action',
