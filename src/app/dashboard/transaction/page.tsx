@@ -9,10 +9,12 @@ import {
   DialogTitle,
   DialogTrigger
 } from '@/components/ui/dialog';
+import { Separator } from '@/components/ui/separator';
+import TransactionList from '@/features/transaction/transaction-list';
 
 export default async function TransactionPage() {
   return (
-    <PageContainer>
+    <PageContainer scrollable>
       <div className='flex flex-1 flex-col space-y-4'>
         <div className='flex items-start justify-between'>
           <Heading title='Transaction' description='Manage transactions' />
@@ -35,6 +37,10 @@ export default async function TransactionPage() {
             </DialogContent>
           </Dialog>
         </div>
+
+        <Separator />
+
+        <TransactionList />
       </div>
     </PageContainer>
   );

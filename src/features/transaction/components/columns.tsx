@@ -1,0 +1,42 @@
+'use client';
+
+import { ColumnDef } from '@tanstack/react-table';
+import { format } from 'date-fns';
+import { TTransactionSchema } from '@/schema/transaction.schema';
+
+export const columns: ColumnDef<TTransactionSchema>[] = [
+  {
+    accessorKey: 'id',
+    header: 'ID'
+  },
+  {
+    accessorKey: 'user',
+    header: 'Name',
+    cell: ({ row }) => {
+      return (
+        <div>{`${row.original?.user?.firstName} ${row.original?.user?.lastName}`}</div>
+      );
+    }
+  },
+  {
+    accessorKey: 'date',
+    header: 'Date',
+    cell: ({ row }) => format(row.original.date, 'PP')
+  },
+  {
+    accessorKey: 'action',
+    header: 'Action'
+  },
+  {
+    accessorKey: 'type',
+    header: 'Type'
+  },
+  {
+    accessorKey: 'amount',
+    header: 'Amount'
+  },
+  {
+    accessorKey: 'remarks',
+    header: 'Remarks'
+  }
+];

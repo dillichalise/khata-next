@@ -6,7 +6,7 @@ const UserTypeEnum = z.enum([UserType.USER, UserType.ADMIN]);
 const UserStatusEnum = z.enum([UserStatus.ACTIVE, UserStatus.INACTIVE]);
 
 // Zod schema for the User model
-const userSchema = z.object({
+export const userSchema = z.object({
   id: z.number().optional(),
   clerkUserId: z.string(),
   firstName: z.string(),
