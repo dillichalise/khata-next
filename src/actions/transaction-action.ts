@@ -4,6 +4,7 @@ import { actionClient } from '@/lib/safe-action';
 import { core } from '@/db/core';
 import SuperJSON from 'superjson';
 import {
+  createTransactionSchema,
   ListTransactionSchema,
   TTransactionPagination
 } from '@/schema/transaction.schema';
@@ -16,4 +17,11 @@ export const getAllTransactions = actionClient
     return SuperJSON.parse(
       SuperJSON.stringify(transactions)
     ) as unknown as TTransactionPagination;
+  });
+
+export const createTransactionAction = actionClient
+  .schema(createTransactionSchema)
+  .action(async ({ parsedInput }) => {
+    const result = await core.transactions.createTransaction(parsedInput);
+    return SuperJSON.parse(SuperJSON.stringify(result));
   });

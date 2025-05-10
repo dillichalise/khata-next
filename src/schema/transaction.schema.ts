@@ -6,6 +6,7 @@ const TransactionActionEnum = z.enum([
   TransactionAction.DEPOSIT,
   TransactionAction.WITHDRAW
 ]);
+
 const TransactionTypeEnum = z.enum([
   TransactionType.LOAN,
   TransactionType.INTEREST,
@@ -15,12 +16,12 @@ const TransactionTypeEnum = z.enum([
 ]);
 
 export const transactionSchema = z.object({
-  id: z.number().optional(),
-  userId: z.string(),
-  date: z.date(),
-  action: TransactionActionEnum.default(TransactionAction.DEPOSIT),
-  type: TransactionTypeEnum.default(TransactionType.MONTHLY_SAVING),
-  amount: z.number(),
+  id: z.number(),
+  userId: z.coerce.number().nullish(),
+  date: z.coerce.date().optional(),
+  action: TransactionActionEnum.optional(),
+  type: TransactionTypeEnum.optional(),
+  amount: z.coerce.number(),
   remarks: z.string().optional(),
   createdAt: z.date().optional(),
   updatedAt: z.date().optional(),
@@ -37,8 +38,19 @@ export const TransactionPagination = z.object({
   total: z.number()
 });
 
+export const createTransactionSchema = transactionSchema.pick({
+  userId: true,
+  date: true,
+  action: true,
+  type: true,
+  amount: true,
+  remarks: true
+});
+
 export type TTransactionSchema = z.infer<typeof transactionSchema>;
 
 export type TListTransactionSchema = z.infer<typeof ListTransactionSchema>;
 
 export type TTransactionPagination = z.infer<typeof TransactionPagination>;
+
+export type TCreateTransactionSchema = z.infer<typeof createTransactionSchema>;

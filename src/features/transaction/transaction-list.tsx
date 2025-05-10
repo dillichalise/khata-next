@@ -24,7 +24,6 @@ export default function TransactionList() {
 
   return (
     <div>
-      Transaction list
       <DataTable
         columns={columns}
         data={transactions}
