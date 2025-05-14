@@ -43,6 +43,7 @@ model User {
   status       UserStatus    @default(INACTIVE)
   createdAt    DateTime      @default(now()) @map("created_at")
   updatedAt    DateTime      @updatedAt @map("updated_at")
+  isAdmin      Boolean       @default(false)
   transactions Transaction[]
 
   @@index([email])
