@@ -6,22 +6,29 @@ on:
       - main
 
 jobs:
-  deploy:
+  prisma-deploy:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Install Node and pnpm
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'pnpm'
+
+      - name: Setup pnpm
         uses: pnpm/action-setup@v2
         with:
-          version: 8
+          version: 10.7.0
+          run_install: false
 
       - name: Install dependencies
         run: pnpm install
 
-      - name: Run Prisma Migrate Deploy
+      - name: Deploy Prisma migrations
         run: pnpm dlx prisma migrate deploy --schema=prisma/schema.prisma
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
