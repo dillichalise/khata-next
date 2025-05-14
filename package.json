@@ -18,7 +18,8 @@
     "prepare": "husky",
     "prisma:generate": "npx prisma generate",
     "prisma:push": "npx prisma db push",
-    "migrate:dev": "prisma migrate dev --preview-feature"
+    "migrate:dev": "prisma migrate dev --preview-feature",
+    "migrate:deploy": "prisma migrate deploy"
   },
   "lint-staged": {
     "**/*.{js,jsx,tsx,ts,css,less,scss,sass}": [
