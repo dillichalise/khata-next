@@ -6,7 +6,7 @@ import {
   TCreateTransactionSchema
 } from '@/schema/transaction.schema';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { TransactionAction, TransactionType } from '@prisma/client';
+import { TransactionAction, UserStatus } from '@prisma/client';
 import { Card, CardContent } from '@/components/ui/card';
 import {
   Form,
@@ -34,8 +34,10 @@ import {
 import { format } from 'date-fns';
 import { useAction } from 'next-safe-action/hooks';
 import { createTransactionAction } from '@/actions/transaction-action';
-import { TRANSACTIONS } from '@/constants/keys';
-import { useQueryClient } from '@tanstack/react-query';
+import { TRANSACTIONS, USERS } from '@/constants/keys';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { getTransactionTypeOptions } from '@/features/options';
+import { getAllUsersAction } from '@/actions';
 
 type CreateTransactionFormProps = {
   onSuccess?: () => void;
@@ -46,14 +48,19 @@ export default function CreateTransactionForm({
 }: CreateTransactionFormProps) {
   const queryClient = useQueryClient();
 
+  const { data: userData, isLoading } = useQuery({
+    queryKey: [USERS],
+    queryFn: () => getAllUsersAction({ status: UserStatus.ACTIVE })
+  });
+
   const form = useForm<TCreateTransactionSchema>({
     resolver: zodResolver(createTransactionSchema),
-    values: {
+    defaultValues: {
       userId: undefined,
       action: TransactionAction.DEPOSIT,
       type: undefined,
       amount: 0,
-      date: undefined
+      date: new Date()
     }
   });
 
@@ -74,27 +81,16 @@ export default function CreateTransactionForm({
       });
   }
 
-  const transactionTypeOptions = () => {
-    const withdrawTypes = [TransactionType.LOAN];
-    const depositTypes = [
-      TransactionType.MONTHLY_SAVING,
-      TransactionType.INTEREST,
-      TransactionType.FINE,
-      TransactionType.LOAN_RETURN
-    ];
+  const TransactionTypeOptions = getTransactionTypeOptions(
+    form.getValues('action')
+  );
 
-    const options =
-      form.getValues('action') === TransactionAction.DEPOSIT
-        ? depositTypes
-        : withdrawTypes;
+  const userOptions = userData?.data?.map((item) => ({
+    value: item.id,
+    label: `${item.firstName} ${item.lastName}`
+  }));
 
-    return options.map((type) => ({
-      label: type,
-      value: type
-    }));
-  };
-
-  form.watch('action');
+  form.watch(['action']);
 
   return (
     <Card className='mx-auto w-full'>
@@ -106,10 +102,24 @@ export default function CreateTransactionForm({
               name='userId'
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>User Id</FormLabel>
-                  <FormControl>
-                    <Input {...field} value={field.value ?? ''} />
-                  </FormControl>
+                  <FormLabel>User</FormLabel>
+                  <Select disabled={isLoading} onValueChange={field.onChange}>
+                    <FormControl>
+                      <SelectTrigger className='w-full'>
+                        <SelectValue placeholder='Select User' />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {userOptions?.map((type) => (
+                        <SelectItem
+                          key={type.value}
+                          value={type.value.toString()}
+                        >
+                          {type.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                   <FormMessage />
                 </FormItem>
               )}
@@ -129,9 +139,10 @@ export default function CreateTransactionForm({
                             ? 'bg-green-700/80 text-white'
                             : 'hover:bg-muted border'
                         }`}
-                        onClick={() =>
-                          field.onChange(TransactionAction.DEPOSIT)
-                        }
+                        onClick={() => {
+                          field.onChange(TransactionAction.DEPOSIT);
+                          form.resetField('type');
+                        }}
                       >
                         {TransactionAction.DEPOSIT}
                       </button>
@@ -142,9 +153,10 @@ export default function CreateTransactionForm({
                             ? 'bg-red-700/80 text-white'
                             : 'hover:bg-muted border'
                         }`}
-                        onClick={() =>
-                          field.onChange(TransactionAction.WITHDRAW)
-                        }
+                        onClick={() => {
+                          field.onChange(TransactionAction.WITHDRAW);
+                          form.resetField('type');
+                        }}
                       >
                         {TransactionAction.WITHDRAW}
                       </button>
@@ -162,15 +174,19 @@ export default function CreateTransactionForm({
                   <FormLabel>Transaction Type</FormLabel>
                   <Select
                     onValueChange={field.onChange}
+                    value={field.value}
                     defaultValue={field.value}
                   >
                     <FormControl>
-                      <SelectTrigger className='w-full'>
+                      <SelectTrigger
+                        className='w-full'
+                        value={field.value ?? undefined}
+                      >
                         <SelectValue placeholder='Select transaction type' />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {transactionTypeOptions().map((type) => (
+                      {TransactionTypeOptions.map((type) => (
                         <SelectItem key={type.value} value={type.value}>
                           {type.label}
                         </SelectItem>

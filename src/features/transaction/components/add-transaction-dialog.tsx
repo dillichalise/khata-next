@@ -4,6 +4,7 @@ import { useState } from 'react';
 import {
   Dialog,
   DialogContent,
+  DialogHeader,
   DialogTitle,
   DialogTrigger
 } from '@/components/ui/dialog';
@@ -23,6 +24,9 @@ export function AddTransactionDialog() {
         </Button>
       </DialogTrigger>
       <DialogContent>
+        <DialogHeader className='flex items-center-safe text-xl font-bold'>
+          Add Transaction Form
+        </DialogHeader>
         <CreateTransactionForm onSuccess={() => setOpen(false)} />
       </DialogContent>
     </Dialog>

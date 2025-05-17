@@ -29,6 +29,15 @@ export const createUserSchema = userSchema.pick({
   role: true
 });
 
+export const getUserListSchema = userSchema
+  .pick({
+    status: true,
+    role: true
+  })
+  .partial();
+
 export type TUserSchema = z.infer<typeof userSchema>;
 
 export type TCreateUserSchema = z.infer<typeof createUserSchema>;
+
+export type TGetUserListSchema = z.infer<typeof getUserListSchema>;

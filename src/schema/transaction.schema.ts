@@ -17,11 +17,11 @@ const TransactionTypeEnum = z.enum([
 
 export const transactionSchema = z.object({
   id: z.number(),
-  userId: z.coerce.number().nullish(),
-  date: z.coerce.date().optional(),
-  action: TransactionActionEnum.optional(),
-  type: TransactionTypeEnum.optional(),
-  amount: z.coerce.number(),
+  userId: z.coerce.number({ message: 'Required' }),
+  date: z.coerce.date({ message: 'Required' }),
+  action: TransactionActionEnum,
+  type: TransactionTypeEnum,
+  amount: z.coerce.number({ message: 'Required' }),
   remarks: z.string().optional(),
   createdAt: z.date().optional(),
   updatedAt: z.date().optional(),

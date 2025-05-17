@@ -11,7 +11,7 @@ import { DataTableSkeleton } from '@/components/ui/table/data-table-skeleton';
 export default function UserList() {
   const { data, isLoading } = useQuery({
     queryKey: [USERS],
-    queryFn: () => getAllUsersAction()
+    queryFn: () => getAllUsersAction({})
   });
 
   const users: User[] = data?.data as User[];

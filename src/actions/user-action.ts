@@ -1,7 +1,7 @@
 'use server';
 
 import { actionClient } from '@/lib/safe-action';
-import { createUserSchema } from '@/schema';
+import { createUserSchema, getUserListSchema } from '@/schema';
 import { core } from '@/db/core';
 import { z } from 'zod';
 
@@ -18,7 +18,7 @@ export const getUserAction = actionClient
   });
 
 export const getAllUsersAction = actionClient
-  .schema(z.void())
-  .action(async () => {
-    return core.user.getAllUsers();
+  .schema(getUserListSchema)
+  .action(async ({ parsedInput }) => {
+    return core.user.getAllUsers(parsedInput);
   });
