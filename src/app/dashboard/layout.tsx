@@ -8,6 +8,7 @@ import { getAuthenticatedUserData } from '@/lib/get-authenticated-user';
 import { auth } from '@clerk/nextjs/server';
 import NoAccessPage from '@/app/dashboard/no-access/page';
 import { UserStatus } from '@prisma/client';
+import { UserProvider } from '@/context/user-context';
 
 export const metadata: Metadata = {
   title: 'Next Shadcn Dashboard Starter',
@@ -31,13 +32,15 @@ export default async function DashboardLayout({
         <AppSidebar />
         <SidebarInset>
           <Header />
-          {/* page main content */}
-          {user && user.status === UserStatus.ACTIVE ? (
-            children
-          ) : (
-            <NoAccessPage />
-          )}
-          {/* page main content ends */}
+          <UserProvider user={user}>
+            {/* page main content */}
+            {user && user.status === UserStatus.ACTIVE ? (
+              children
+            ) : (
+              <NoAccessPage />
+            )}
+            {/* page main content ends */}
+          </UserProvider>
         </SidebarInset>
       </SidebarProvider>
     </KBar>
