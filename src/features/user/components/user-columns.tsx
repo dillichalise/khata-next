@@ -2,8 +2,9 @@
 
 import { User } from '@prisma/client';
 import { ColumnDef } from '@tanstack/react-table';
+import Link from 'next/link';
 
-export const columns: ColumnDef<User>[] = [
+export const userColumns: ColumnDef<User>[] = [
   {
     accessorKey: 'id',
     header: 'ID'
@@ -12,7 +13,9 @@ export const columns: ColumnDef<User>[] = [
     accessorKey: 'name',
     header: 'Name',
     cell: ({ row }) => (
-      <div>{`${row.original.firstName} ${row.original.lastName}`}</div>
+      <Link
+        href={`user/${row.original.id}`}
+      >{`${row.original.firstName} ${row.original.lastName}`}</Link>
     )
   },
   {

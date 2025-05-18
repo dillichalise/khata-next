@@ -3,7 +3,7 @@
 import { getAllUsersAction } from '@/actions';
 import { useQuery } from '@tanstack/react-query';
 import { USERS } from '@/constants/keys';
-import { columns } from '@/features/user/components/columns';
+import { userColumns } from '@/features/user/components/user-columns';
 import { User } from '@prisma/client';
 import { DataTable } from '@/components/ui/table/data-table';
 import { DataTableSkeleton } from '@/components/ui/table/data-table-skeleton';
@@ -19,7 +19,7 @@ export default function UserList() {
   if (isLoading) return <DataTableSkeleton columnCount={5} rowCount={10} />;
   return (
     <div>
-      <DataTable columns={columns} data={users} totalItems={users.length} />
+      <DataTable columns={userColumns} data={users} totalItems={users.length} />
     </div>
   );
 }

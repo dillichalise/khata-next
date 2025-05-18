@@ -47,6 +47,15 @@ export const createTransactionSchema = transactionSchema.pick({
   remarks: true
 });
 
+const TypeEnum = z.enum([TransactionType.LOAN, TransactionType.MONTHLY_SAVING]);
+
+export const ListUserTransactionsSchema = z.object({
+  page: z.number().default(1),
+  limit: z.number().default(10),
+  userId: z.coerce.number(),
+  type: TypeEnum.optional()
+});
+
 export type TTransactionSchema = z.infer<typeof transactionSchema>;
 
 export type TListTransactionSchema = z.infer<typeof ListTransactionSchema>;
@@ -54,3 +63,7 @@ export type TListTransactionSchema = z.infer<typeof ListTransactionSchema>;
 export type TTransactionPagination = z.infer<typeof TransactionPagination>;
 
 export type TCreateTransactionSchema = z.infer<typeof createTransactionSchema>;
+
+export type TListUserTransactionsSchema = z.infer<
+  typeof ListUserTransactionsSchema
+>;
