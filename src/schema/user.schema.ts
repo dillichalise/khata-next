@@ -36,8 +36,18 @@ export const getUserListSchema = userSchema
   })
   .partial();
 
+export const userSummarySchema = z.object({
+  userId: z.number(),
+  fullName: z.string(),
+  totalSavings: z.number(),
+  totalInterestPaid: z.number(),
+  totalFinePaid: z.number()
+});
+
 export type TUserSchema = z.infer<typeof userSchema>;
 
 export type TCreateUserSchema = z.infer<typeof createUserSchema>;
 
 export type TGetUserListSchema = z.infer<typeof getUserListSchema>;
+
+export type TUserSummarySchema = z.infer<typeof userSummarySchema>;

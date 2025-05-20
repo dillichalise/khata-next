@@ -15,9 +15,9 @@ import React from 'react';
 import { useUser } from '@/context/user-context';
 
 export default function OverViewLayout({
-  recent_transactions
+  user_transaction_summary
 }: {
-  recent_transactions: React.ReactNode;
+  user_transaction_summary: React.ReactNode;
 }) {
   const { user } = useUser();
 
@@ -121,9 +121,7 @@ export default function OverViewLayout({
             </CardFooter>
           </Card>
         </div>
-        <div className='grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-7'>
-          <div className='col-span-4 md:col-span-3'>{recent_transactions}</div>
-        </div>
+        <div>{user_transaction_summary}</div>
       </div>
     </PageContainer>
   );

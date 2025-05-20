@@ -1,6 +1,6 @@
 generator client {
   provider        = "prisma-client-js"
-  previewFeatures = ["prismaSchemaFolder"]
+  previewFeatures = ["views", "prismaSchemaFolder"]
 }
 
 datasource db {
@@ -38,7 +38,7 @@ model User {
   firstName    String        @map("first_name")
   lastName     String        @map("last_name")
   email        String        @unique
-  phoneNumber  String        @unique @map(name: "phone_number")
+  phoneNumber  String        @unique @map("phone_number")
   role         UserType      @default(USER)
   status       UserStatus    @default(INACTIVE)
   createdAt    DateTime      @default(now()) @map("created_at")
@@ -66,4 +66,14 @@ model Transaction {
   @@index([userId])
   @@index([type])
   @@map("transactions")
+}
+
+view UserSummary {
+  userId            Int     @unique() @map("user_id")
+  fullName          String  @map("full_name")
+  totalSavings      Decimal @map("total_savings") @db.Decimal
+  totalInterestPaid Decimal @map("total_interest_paid") @db.Decimal
+  totalFinePaid     Decimal @map("total_fine_paid") @db.Decimal
+
+  @@map("user_summary")
 }
