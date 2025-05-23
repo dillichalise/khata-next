@@ -1,9 +1,9 @@
 import * as users from '@/db/lib/user';
 import * as transactions from '@/db/lib/transaction';
-import * as userSummary from '@/db/lib/user-summary';
+import * as summary from 'src/db/lib/summary';
 
 export const db = {
   users,
   transactions,
-  userSummary
+  summary
 };

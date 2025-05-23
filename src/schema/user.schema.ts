@@ -44,6 +44,16 @@ export const userSummarySchema = z.object({
   totalFinePaid: z.number()
 });
 
+export const overallTransactionSummarySchema = z.object({
+  id: z.number(),
+  totalMonthlySavings: z.number(),
+  totalInterest: z.number(),
+  totalFine: z.number(),
+  totalCollectedAmount: z.number(),
+  totalLoanTaken: z.number(),
+  remainingAmount: z.number()
+});
+
 export type TUserSchema = z.infer<typeof userSchema>;
 
 export type TCreateUserSchema = z.infer<typeof createUserSchema>;
@@ -51,3 +61,7 @@ export type TCreateUserSchema = z.infer<typeof createUserSchema>;
 export type TGetUserListSchema = z.infer<typeof getUserListSchema>;
 
 export type TUserSummarySchema = z.infer<typeof userSummarySchema>;
+
+export type TOverallTransactionSummarySchema = z.infer<
+  typeof overallTransactionSummarySchema
+>;

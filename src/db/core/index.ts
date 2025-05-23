@@ -1,5 +1,5 @@
 import * as user from './user';
 import * as transactions from './transaction';
-import * as userSummary from './user-summary';
+import * as summary from './summary';
 
-export const core = { user, transactions, userSummary };
+export const core = { user, transactions, summary };
