@@ -69,11 +69,12 @@ model Transaction {
 }
 
 view UserSummary {
-  userId            Int     @unique() @map("user_id")
+  userId            Int     @unique @map("user_id")
   fullName          String  @map("full_name")
   totalSavings      Decimal @map("total_savings") @db.Decimal
   totalInterestPaid Decimal @map("total_interest_paid") @db.Decimal
   totalFinePaid     Decimal @map("total_fine_paid") @db.Decimal
+  remainingLoan     Decimal @map("remaining_loan") @db.Decimal(10, 2)
 
   @@map("user_summary")
 }
