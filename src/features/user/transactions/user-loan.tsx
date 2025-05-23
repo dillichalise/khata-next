@@ -5,7 +5,7 @@ import { useTransactionFilters } from '@/features/transaction/lib/use-transactio
 import { TransactionType } from '@prisma/client';
 import { useQuery } from '@tanstack/react-query';
 import { TRANSACTIONS } from '@/constants/keys';
-import { getUserTransactionsAction } from '@/actions/transaction-action';
+import { getUserTransactionsAction } from '@/actions';
 import { TTransactionSchema } from '@/schema/transaction.schema';
 import { Skeleton } from '@/components/ui/skeleton';
 import { DataTable } from '@/components/ui/table/data-table';

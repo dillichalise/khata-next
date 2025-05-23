@@ -33,11 +33,10 @@ import {
 } from '@/components/ui/popover';
 import { format } from 'date-fns';
 import { useAction } from 'next-safe-action/hooks';
-import { createTransactionAction } from '@/actions/transaction-action';
 import { TRANSACTIONS, USERS } from '@/constants/keys';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { getTransactionTypeOptions } from '@/features/options';
-import { getAllUsersAction } from '@/actions';
+import { getAllUsersAction, createTransactionAction } from '@/actions';
 
 type CreateTransactionFormProps = {
   onSuccess?: () => void;

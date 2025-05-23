@@ -8,7 +8,7 @@ import {
   CardTitle
 } from '@/components/ui/card';
 import { useQuery } from '@tanstack/react-query';
-import { getUserTransactionSummaryAction } from '@/actions/user-summary';
+import { getUserTransactionSummaryAction } from '@/actions';
 import {
   Table,
   TableBody,
@@ -17,10 +17,11 @@ import {
   TableHeader,
   TableRow
 } from '@/components/ui/table';
+import { USER_SUMMARY } from '@/constants/keys';
 
 export function UserTransactionSummary() {
   const { data } = useQuery({
-    queryKey: [],
+    queryKey: [USER_SUMMARY],
     queryFn: () => getUserTransactionSummaryAction()
   });
 

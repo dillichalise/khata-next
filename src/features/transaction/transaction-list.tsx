@@ -1,6 +1,6 @@
 'use client';
 
-import { getAllTransactions } from '@/actions/transaction-action';
+import { getAllTransactions } from '@/actions';
 import { useQuery } from '@tanstack/react-query';
 import { DataTableSkeleton } from '@/components/ui/table/data-table-skeleton';
 import { TRANSACTIONS } from '@/constants/keys';

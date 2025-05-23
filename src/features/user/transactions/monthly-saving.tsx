@@ -2,7 +2,7 @@
 
 import { useQuery } from '@tanstack/react-query';
 import { TRANSACTIONS } from '@/constants/keys';
-import { getUserTransactionsAction } from '@/actions/transaction-action';
+import { getUserTransactionsAction } from '@/actions';
 import { useParams } from 'next/navigation';
 import { useTransactionFilters } from '@/features/transaction/lib/use-transaction-search-params';
 import { Skeleton } from '@/components/ui/skeleton';
