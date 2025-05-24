@@ -37,22 +37,24 @@ export function UserTransactionSummary() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>UserId</TableHead>
-              <TableHead>User Name</TableHead>
+              <TableHead>SN</TableHead>
+              <TableHead>Name</TableHead>
               <TableHead>Total Saving</TableHead>
               <TableHead>Total Interest Paid</TableHead>
               <TableHead>Total Fine Paid</TableHead>
+              <TableHead>Remaining Loan</TableHead>
             </TableRow>
           </TableHeader>
 
           <TableBody>
             {data?.data?.map((user, index) => (
               <TableRow key={index}>
-                <TableCell>{user.userId}</TableCell>
+                <TableCell>{index + 1}</TableCell>
                 <TableCell>{user.fullName}</TableCell>
                 <TableCell>{formatCurrency(+user.totalSavings)}</TableCell>
                 <TableCell>{formatCurrency(+user.totalInterestPaid)}</TableCell>
                 <TableCell>{formatCurrency(+user.totalFinePaid)}</TableCell>
+                <TableCell>{formatCurrency(+user.remainingLoan)}</TableCell>
               </TableRow>
             ))}
           </TableBody>

@@ -39,9 +39,11 @@ export const getUserListSchema = userSchema
 export const userSummarySchema = z.object({
   userId: z.number(),
   fullName: z.string(),
+  email: z.string(),
   totalSavings: z.number(),
   totalInterestPaid: z.number(),
-  totalFinePaid: z.number()
+  totalFinePaid: z.number(),
+  remainingLoan: z.number()
 });
 
 export const overallTransactionSummarySchema = z.object({

@@ -23,3 +23,10 @@ export const getOverallTransactionSummaryAction = actionClient
       SuperJSON.stringify(response)
     ) as unknown as TOverallTransactionSummarySchema;
   });
+
+export const getUserAccountSummaryAction = actionClient
+  .schema(z.object({ userId: z.number() }))
+  .action(async ({ parsedInput }) => {
+    const response = await core.summary.getUserSummary(parsedInput.userId);
+    return SuperJSON.parse(SuperJSON.stringify(response)) as unknown as any;
+  });

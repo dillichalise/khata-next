@@ -54,3 +54,10 @@ export async function getTransactionSummaryFromUserSummary(): Promise<Transactio
     throw new Error('Failed to fetch transaction summary');
   }
 }
+
+export function getLatestUserHistory(userId: number) {
+  return prisma.loanHistory.findFirst({
+    where: { userId },
+    orderBy: { transactionDate: 'desc' }
+  });
+}

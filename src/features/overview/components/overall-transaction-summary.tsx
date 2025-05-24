@@ -75,7 +75,9 @@ export function OverallUserTransactionSummary() {
       {transactionSummaryData.map((item) => (
         <Card key={item.key} className='@container/card'>
           <CardHeader>
-            <CardDescription>{item.label}</CardDescription>
+            <CardDescription className='text-base font-semibold'>
+              {item.label}
+            </CardDescription>
             <CardTitle className='text-2xl font-semibold tabular-nums @[250px]/card:text-3xl'>
               {formatCurrency(item.value)}
             </CardTitle>
