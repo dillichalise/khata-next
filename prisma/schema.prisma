@@ -78,3 +78,17 @@ view UserSummary {
 
   @@map("user_summary")
 }
+
+view LoanHistory {
+  id              Int             @id @default(autoincrement())
+  userId          Int             @map("user_id")
+  transactionDate DateTime        @map("transaction_date")
+  description     TransactionType
+  remarks         String?
+  amount          Decimal         @db.Decimal(10, 2)
+  remainingLoan   Decimal?        @map("remaining_loan") @db.Decimal(10, 2)
+  totalDays       Int?            @map("total_days")
+  interestAmount  Decimal?        @map("interest_amount") @db.Decimal(10, 2)
+
+  @@map("loan_history")
+}

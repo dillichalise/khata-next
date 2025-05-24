@@ -6,8 +6,8 @@ import Link from 'next/link';
 
 export const userColumns: ColumnDef<User>[] = [
   {
-    accessorKey: 'id',
-    header: 'ID'
+    header: 'SN',
+    cell: ({ row }) => row.index + 1
   },
   {
     accessorKey: 'name',

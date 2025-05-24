@@ -6,8 +6,8 @@ import { TTransactionSchema } from '@/schema/transaction.schema';
 
 export const columns: ColumnDef<TTransactionSchema>[] = [
   {
-    accessorKey: 'id',
-    header: 'ID'
+    header: 'SN',
+    cell: ({ row }) => row.index + 1
   },
   {
     accessorKey: 'user',

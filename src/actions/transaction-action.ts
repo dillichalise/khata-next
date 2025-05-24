@@ -7,7 +7,8 @@ import {
   createTransactionSchema,
   ListUserTransactionsSchema,
   ListTransactionSchema,
-  TTransactionPagination
+  TTransactionPagination,
+  TLoanHistoryPagination
 } from '@/schema/transaction.schema';
 
 export const getAllTransactions = actionClient
@@ -35,4 +36,14 @@ export const createTransactionAction = actionClient
   .action(async ({ parsedInput }) => {
     const result = await core.transactions.createTransaction(parsedInput);
     return SuperJSON.parse(SuperJSON.stringify(result));
+  });
+
+export const getUserLoanHistoryAction = actionClient
+  .schema(ListUserTransactionsSchema)
+  .action(async ({ parsedInput }) => {
+    const loanHistory =
+      await core.transactions.getLoanHistoryByUserId(parsedInput);
+    return SuperJSON.parse(
+      SuperJSON.stringify(loanHistory)
+    ) as unknown as TLoanHistoryPagination;
   });

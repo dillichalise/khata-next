@@ -55,3 +55,23 @@ export async function getUserTransactions({
   });
   return { transactions, total };
 }
+
+export async function getUserLoanTransactions({
+  page,
+  limit,
+  userId
+}: TListUserTransactionsSchema) {
+  const skip = (page - 1) * limit;
+
+  const [loanHistoryData, total] = await Promise.all([
+    prisma.loanHistory.findMany({
+      where: { userId },
+      skip,
+      take: limit,
+      orderBy: { transactionDate: 'desc' }
+    }),
+    prisma.loanHistory.count({ where: { userId } })
+  ]);
+
+  return { loanHistoryData, total };
+}

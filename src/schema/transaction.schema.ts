@@ -28,6 +28,18 @@ export const transactionSchema = z.object({
   user: userSchema.optional()
 });
 
+export const loanHistorySchema = z.object({
+  id: z.number(),
+  userId: z.coerce.number({ message: 'Required' }),
+  transactionDate: z.coerce.date({ message: 'Required' }),
+  description: TransactionTypeEnum,
+  amount: z.coerce.number({ message: 'Required' }),
+  remarks: z.string().optional(),
+  remainingLoan: z.coerce.number(),
+  interestAmount: z.coerce.number(),
+  totalDays: z.number()
+});
+
 export const ListTransactionSchema = z.object({
   page: z.number().default(1),
   limit: z.number().default(10)
@@ -35,6 +47,11 @@ export const ListTransactionSchema = z.object({
 
 export const TransactionPagination = z.object({
   transactions: transactionSchema.array().nullish(),
+  total: z.number()
+});
+
+export const LoanHistoryPagination = z.object({
+  loanHistoryData: loanHistorySchema.array().nullish(),
   total: z.number()
 });
 
@@ -58,9 +75,13 @@ export const ListUserTransactionsSchema = z.object({
 
 export type TTransactionSchema = z.infer<typeof transactionSchema>;
 
+export type TLoanHistorySchema = z.infer<typeof loanHistorySchema>;
+
 export type TListTransactionSchema = z.infer<typeof ListTransactionSchema>;
 
 export type TTransactionPagination = z.infer<typeof TransactionPagination>;
+
+export type TLoanHistoryPagination = z.infer<typeof LoanHistoryPagination>;
 
 export type TCreateTransactionSchema = z.infer<typeof createTransactionSchema>;
 

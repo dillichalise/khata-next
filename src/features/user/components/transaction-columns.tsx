@@ -12,8 +12,8 @@ export const getTransactionColumns = (
 
   return [
     {
-      accessorKey: 'id',
-      header: 'ID'
+      header: 'SN',
+      cell: ({ row }) => row.index + 1
     },
     ...(isLoan ? [{ accessorKey: 'type', header: 'Type' }] : []),
     {

@@ -16,3 +16,7 @@ export function getTransactionsByUserId(data: TListUserTransactionsSchema) {
 export function createTransaction(data: TCreateTransactionSchema) {
   return db.transactions.createTransaction(data);
 }
+
+export function getLoanHistoryByUserId(data: TListUserTransactionsSchema) {
+  return db.transactions.getUserLoanTransactions(data);
+}
