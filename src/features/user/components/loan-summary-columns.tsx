@@ -3,6 +3,7 @@
 import { ColumnDef } from '@tanstack/react-table';
 import { format } from 'date-fns';
 import { TLoanHistorySchema } from '@/schema/transaction.schema';
+import { formatCurrency } from '@/lib/format-currency';
 
 export const loanHistoryColumns: ColumnDef<TLoanHistorySchema>[] = [
   {
@@ -25,11 +26,13 @@ export const loanHistoryColumns: ColumnDef<TLoanHistorySchema>[] = [
   },
   {
     accessorKey: 'amount',
-    header: 'amount'
+    header: 'amount',
+    cell: ({ row }) => formatCurrency(+row.original.amount)
   },
   {
     accessorKey: 'remainingLoan',
-    header: 'Remaining Loan'
+    header: 'Remaining Loan',
+    cell: ({ row }) => formatCurrency(+row.original.remainingLoan)
   },
   {
     accessorKey: 'totalDays',

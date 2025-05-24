@@ -3,6 +3,7 @@
 import { ColumnDef } from '@tanstack/react-table';
 import { format } from 'date-fns';
 import { TTransactionSchema } from '@/schema/transaction.schema';
+import { formatCurrency } from '@/lib/format-currency';
 
 export const columns: ColumnDef<TTransactionSchema>[] = [
   {
@@ -33,7 +34,8 @@ export const columns: ColumnDef<TTransactionSchema>[] = [
   },
   {
     accessorKey: 'amount',
-    header: 'Amount'
+    header: 'Amount',
+    cell: ({ row }) => formatCurrency(+row.original.amount)
   },
   {
     accessorKey: 'remarks',

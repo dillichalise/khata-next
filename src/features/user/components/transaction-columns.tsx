@@ -1,40 +1,21 @@
 import { TTransactionSchema } from '@/schema/transaction.schema';
 import { ColumnDef } from '@tanstack/react-table';
 import { format } from 'date-fns';
-import { TransactionType } from '@prisma/client';
-import { getTransactionTypeColor } from '@/lib/helper';
-import { cn } from '@/lib/utils';
+import { formatCurrency } from '@/lib/format-currency';
 
-export const getTransactionColumns = (
-  type: TransactionType
-): ColumnDef<TTransactionSchema>[] => {
-  const isLoan = type === TransactionType.LOAN;
-
-  return [
-    {
-      header: 'SN',
-      cell: ({ row }) => row.index + 1
-    },
-    ...(isLoan ? [{ accessorKey: 'type', header: 'Type' }] : []),
-    {
-      accessorKey: 'date',
-      header: !isLoan ? 'Saving Month' : 'Date',
-      cell: ({ row }) =>
-        row.original.date &&
-        format(row.original.date, !isLoan ? 'MMMM, yyyy' : 'PP')
-    },
-    {
-      accessorKey: 'amount',
-      header: 'Amount',
-      cell: ({ row }) => {
-        const amount = row.original.amount;
-        return (
-          <span className={cn(getTransactionTypeColor(row.original.type))}>
-            {amount}
-          </span>
-        );
-      }
-    },
-    ...(isLoan ? [{ accessorKey: 'remarks', header: 'Remarks' }] : [])
-  ];
-};
+export const monthlySavingColumns: ColumnDef<TTransactionSchema>[] = [
+  {
+    header: 'SN',
+    cell: ({ row }) => row.index + 1
+  },
+  {
+    accessorKey: 'date',
+    header: 'Saving Month',
+    cell: ({ row }) => row.original.date && format(row.original.date, 'PP')
+  },
+  {
+    accessorKey: 'amount',
+    header: 'Amount',
+    cell: ({ row }) => formatCurrency(+row.original.amount)
+  }
+];

@@ -18,6 +18,7 @@ import {
   TableRow
 } from '@/components/ui/table';
 import { USER_SUMMARY } from '@/constants/keys';
+import { formatCurrency } from '@/lib/format-currency';
 
 export function UserTransactionSummary() {
   const { data } = useQuery({
@@ -49,9 +50,9 @@ export function UserTransactionSummary() {
               <TableRow key={index}>
                 <TableCell>{user.userId}</TableCell>
                 <TableCell>{user.fullName}</TableCell>
-                <TableCell>{user.totalSavings}</TableCell>
-                <TableCell>{user.totalInterestPaid}</TableCell>
-                <TableCell>{user.totalFinePaid}</TableCell>
+                <TableCell>{formatCurrency(+user.totalSavings)}</TableCell>
+                <TableCell>{formatCurrency(+user.totalInterestPaid)}</TableCell>
+                <TableCell>{formatCurrency(+user.totalFinePaid)}</TableCell>
               </TableRow>
             ))}
           </TableBody>
