@@ -70,9 +70,9 @@ export default function UserForm({
               name='clerkUserId'
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Clerk User Id</FormLabel>
+                  <FormLabel hidden={true}>Clerk User Id</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input {...field} hidden={true} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

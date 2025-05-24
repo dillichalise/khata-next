@@ -1,6 +1,6 @@
 'use server';
 
-import { actionClient } from '@/lib/safe-action';
+import { authActionClient, authAdminClient } from '@/lib/safe-action';
 import { core } from '@/db/core';
 import SuperJSON from 'superjson';
 import {
@@ -11,7 +11,7 @@ import {
   TLoanHistoryPagination
 } from '@/schema/transaction.schema';
 
-export const getAllTransactions = actionClient
+export const getAllTransactions = authActionClient
   .schema(ListTransactionSchema)
   .action(async ({ parsedInput }) => {
     const transactions =
@@ -21,7 +21,7 @@ export const getAllTransactions = actionClient
     ) as unknown as TTransactionPagination;
   });
 
-export const getUserTransactionsAction = actionClient
+export const getUserTransactionsAction = authActionClient
   .schema(ListUserTransactionsSchema)
   .action(async ({ parsedInput }) => {
     const transactions =
@@ -31,14 +31,14 @@ export const getUserTransactionsAction = actionClient
     ) as unknown as TTransactionPagination;
   });
 
-export const createTransactionAction = actionClient
+export const createTransactionAction = authAdminClient
   .schema(createTransactionSchema)
   .action(async ({ parsedInput }) => {
     const result = await core.transactions.createTransaction(parsedInput);
     return SuperJSON.parse(SuperJSON.stringify(result));
   });
 
-export const getUserLoanHistoryAction = actionClient
+export const getUserLoanHistoryAction = authActionClient
   .schema(ListUserTransactionsSchema)
   .action(async ({ parsedInput }) => {
     const loanHistory =

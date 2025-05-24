@@ -14,7 +14,7 @@ export default function NoAccessPage() {
       </span>
       <h2 className='font-heading my-2 text-2xl font-bold'>Forbidden Access</h2>
       <p>
-        Sorry, Looks like you are not registered to our system. Please contact
+        Sorry, Looks like you are not authorized to our system. Please contact
         admin.
       </p>
       <div className='mt-8 flex justify-center gap-2'>
