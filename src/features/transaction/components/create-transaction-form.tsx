@@ -37,6 +37,8 @@ import { TRANSACTIONS, USERS } from '@/constants/keys';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { getTransactionTypeOptions } from '@/features/options';
 import { getAllUsersAction, createTransactionAction } from '@/actions';
+import { CalendarIcon } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 type CreateTransactionFormProps = {
   onSuccess?: () => void;
@@ -218,27 +220,31 @@ export default function CreateTransactionForm({
                 <FormItem>
                   <FormLabel>Date</FormLabel>
                   <Popover>
-                    <FormControl>
-                      <PopoverTrigger asChild>
+                    <PopoverTrigger asChild>
+                      <FormControl>
                         <Button
                           type='button'
                           variant='outline'
-                          className='w-full cursor-pointer'
-                        >
-                          {field.value ? (
-                            format(field.value, 'PPP')
-                          ) : (
-                            <span>Select date</span>
+                          className={cn(
+                            'w-full cursor-pointer justify-start text-left',
+                            !field.value && 'text-muted-foreground'
                           )}
+                        >
+                          <CalendarIcon className='mr-2 h-4 w-4' />
+                          {field.value
+                            ? format(field.value, 'PPP')
+                            : 'Select date'}
                         </Button>
-                      </PopoverTrigger>
-                    </FormControl>
-                    <PopoverContent className='w-auto p-0'>
+                      </FormControl>
+                    </PopoverTrigger>
+
+                    <PopoverContent className='w-auto p-0' align='start'>
                       <Calendar
                         mode='single'
                         selected={field.value}
                         onSelect={field.onChange}
                         initialFocus
+                        defaultMonth={field.value}
                       />
                     </PopoverContent>
                   </Popover>
