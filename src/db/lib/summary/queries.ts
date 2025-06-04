@@ -56,10 +56,10 @@ export async function getTransactionSummaryFromUserSummary(): Promise<Transactio
   }
 }
 
-export function getLatestUserHistory(userId: number) {
-  return prisma.loanHistory.findFirst({
+export function getUserHistories(userId: number) {
+  return prisma.loanHistory.findMany({
     where: { userId },
-    orderBy: { transactionDate: 'desc' }
+    orderBy: [{ transactionDate: 'asc' }, { createdAt: 'asc' }]
   });
 }
 

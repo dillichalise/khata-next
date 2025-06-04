@@ -20,9 +20,40 @@ export async function getUserSummary(userId: number) {
     await db.summary.getLatestInterestPaidData(userId);
 
   let interestToPay = 0.0;
-  let remainingLoan = Number(latestInterestPaidData?.remainingLoan);
+  let remainingLoan: number;
 
-  if (latestInterestPaidData) {
+  if (!latestInterestPaidData) {
+    // Calculate data from only loan and loan return
+    remainingLoan = 0;
+    const userHistories = await db.summary.getUserHistories(userId);
+    if (userHistories.length === 0) {
+      remainingLoan = 0;
+    } else {
+      const principleAmt = Number(
+        userHistories[userHistories.length - 1].remainingLoan
+      );
+      const tDate = new Date(
+        userHistories[userHistories.length - 1].transactionDate
+      );
+
+      for (let i = 0; i < userHistories.length - 1; i++) {
+        if (userHistories.length === 1) return;
+        const pAmount = Number(userHistories[i].remainingLoan);
+        const days = differenceInDays(
+          new Date(userHistories[i + 1].transactionDate),
+          new Date(userHistories[i].transactionDate)
+        );
+        interestToPay =
+          interestToPay + (await calculateInterest(pAmount, days));
+      }
+
+      interestToPay =
+        interestToPay +
+        (await calculateInterest(principleAmt, differenceInDays(today, tDate)));
+
+      remainingLoan = principleAmt;
+    }
+  } else {
     const transactionsAfterLatestInterestPaid =
       await db.summary.getTransactionsAfterLatestInterestPaid(
         userId,
@@ -108,17 +139,11 @@ export async function getUserSummary(userId: number) {
         ].remainingLoan
       );
     }
-  } else {
-    const latestHistory = await db.summary.getLatestUserHistory(userId);
-    if (!latestHistory || latestHistory.remainingLoan === null) {
-      remainingLoan = 0.0;
-      interestToPay = 0.0;
-    }
   }
 
   return {
-    remainingLoan: remainingLoan,
-    totalInterest: interestToPay,
+    remainingLoan: remainingLoan || 0,
+    totalInterest: interestToPay || 0,
     name: `${user?.firstName} ${user?.lastName}`
   };
 }
