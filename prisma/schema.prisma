@@ -83,6 +83,7 @@ view LoanHistory {
   id              Int             @id @default(autoincrement())
   userId          Int             @map("user_id")
   transactionDate DateTime        @map("transaction_date")
+  createdAt       DateTime        @map("created_at")
   description     TransactionType
   remarks         String?
   amount          Decimal         @db.Decimal(10, 2)

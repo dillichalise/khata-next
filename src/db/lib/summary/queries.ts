@@ -1,4 +1,5 @@
 import { prisma } from '@/db/lib/prisma';
+import { TransactionType } from '@prisma/client';
 
 export type TransactionSummary = {
   totalMonthlySavings: number;
@@ -55,9 +56,31 @@ export async function getTransactionSummaryFromUserSummary(): Promise<Transactio
   }
 }
 
-export function getLatestUserHistory(userId: number) {
-  return prisma.loanHistory.findFirst({
+export function getUserHistories(userId: number) {
+  return prisma.loanHistory.findMany({
     where: { userId },
+    orderBy: [{ transactionDate: 'asc' }, { createdAt: 'asc' }]
+  });
+}
+
+export function getTransactionsAfterLatestInterestPaid(
+  userId: number,
+  interestPaidDate: Date
+) {
+  return prisma.loanHistory.findMany({
+    where: {
+      userId,
+      transactionDate: {
+        gte: interestPaidDate
+      }
+    },
+    orderBy: [{ transactionDate: 'asc' }, { createdAt: 'asc' }]
+  });
+}
+
+export function getLatestInterestPaidData(userId: number) {
+  return prisma.loanHistory.findFirst({
+    where: { userId, description: TransactionType.INTEREST },
     orderBy: { transactionDate: 'desc' }
   });
 }

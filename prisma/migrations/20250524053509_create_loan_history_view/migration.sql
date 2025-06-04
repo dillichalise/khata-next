@@ -5,6 +5,7 @@ WITH full_loan_history AS (
     SELECT
         t.user_id,
         t.date AS transaction_date,
+        t.created_at,
         t.type,
         t.amount,
         SUM(
@@ -13,7 +14,7 @@ WITH full_loan_history AS (
             WHEN t.type ='LOAN_RETURN' THEN -t.amount
             ELSE 0
             END
-           ) OVER (PARTITION BY t.user_id ORDER BY t.date ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS running_loan
+           ) OVER (PARTITION BY t.user_id ORDER BY t.date, t.created_at ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS running_loan
     FROM transactions t
     WHERE t.type IN ('LOAN', 'LOAN_RETURN', 'INTEREST')
 ),
@@ -21,17 +22,19 @@ WITH full_loan_history AS (
          SELECT
              user_id,
              transaction_date,
+             created_at,
              type,
              amount,
              running_loan,
-             LAG(transaction_date) OVER (PARTITION BY user_id ORDER BY transaction_date) AS prev_date,
-             LAG(running_loan) OVER (PARTITION BY user_id ORDER BY transaction_date) AS prev_remaining_loan
+             LAG(transaction_date) OVER (PARTITION BY user_id ORDER BY transaction_date, created_at) AS prev_date,
+             LAG(running_loan) OVER (PARTITION BY user_id ORDER BY transaction_date, created_at) AS prev_remaining_loan
          FROM full_loan_history
      ),
      calculated_interest AS (
          SELECT
              th.user_id,
              th.transaction_date,
+             th.created_at,
              th.type AS description,
              CASE
                  WHEN th.type = 'LOAN' THEN 'Loan taken'
@@ -49,9 +52,10 @@ WITH full_loan_history AS (
          FROM transaction_with_prev_data th
      )
 SELECT
-    ROW_NUMBER() OVER (ORDER BY transaction_date, user_id) AS id,
+    ROW_NUMBER() OVER (ORDER BY transaction_date, created_at, user_id) AS id,
     user_id,
     transaction_date,
+    created_at,
     description,
     remarks,
     amount,

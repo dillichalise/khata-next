@@ -9,9 +9,6 @@ export async function getUserByClerkUserId(clerkUserId: string) {
   return prisma.user.findFirst({ where: { clerkUserId } });
 }
 
-export async function getUserDetails(userId: number) {
-  return prisma.user.findFirst({
-    where: { id: userId },
-    include: { transactions: { orderBy: { createdAt: 'desc' } } }
-  });
+export async function getUserById(id: number) {
+  return prisma.user.findFirst({ where: { id } });
 }

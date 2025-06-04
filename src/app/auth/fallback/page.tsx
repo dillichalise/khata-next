@@ -38,8 +38,8 @@ export default async function PostLoginOperation() {
     );
 
   return (
-    <div className='relative h-screen flex-col items-center justify-center md:grid lg:max-w-none lg:px-0'>
-      <div className='flex h-full items-center justify-center p-4 lg:p-8'>
+    <div className='relative h-screen flex-col items-center justify-center'>
+      <div className='flex h-full items-center justify-center p-4'>
         <div className='flex w-full max-w-md flex-col items-center justify-center space-y-6'>
           <UserForm initialData={userData} pageTitle={'Register user'} />
         </div>
