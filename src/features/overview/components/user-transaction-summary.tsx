@@ -19,6 +19,7 @@ import {
 } from '@/components/ui/table';
 import { USER_SUMMARY } from '@/constants/keys';
 import { formatCurrency } from '@/lib/format-currency';
+import Link from 'next/link';
 
 export function UserTransactionSummary() {
   const { data } = useQuery({
@@ -50,7 +51,9 @@ export function UserTransactionSummary() {
             {data?.data?.map((user, index) => (
               <TableRow key={index}>
                 <TableCell>{index + 1}</TableCell>
-                <TableCell>{user.fullName}</TableCell>
+                <TableCell>
+                  <Link href={`user/${user.userId}`}>{user.fullName}</Link>
+                </TableCell>
                 <TableCell>{formatCurrency(+user.totalSavings)}</TableCell>
                 <TableCell>{formatCurrency(+user.totalInterestPaid)}</TableCell>
                 <TableCell>{formatCurrency(+user.totalFinePaid)}</TableCell>

@@ -68,7 +68,8 @@ export async function getUserLoanTransactions({
       where: { userId },
       skip,
       take: limit,
-      orderBy: { transactionDate: 'desc' }
+      orderBy: { id: 'desc' }
+      // orderBy: [{ createdAt: 'desc' }, { transactionDate: 'desc' }]
     }),
     prisma.loanHistory.count({ where: { userId } })
   ]);
