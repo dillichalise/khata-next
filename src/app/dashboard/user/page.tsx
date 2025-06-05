@@ -5,7 +5,7 @@ import UserHeader from '@/features/user/components/user-header';
 
 export default function Page() {
   return (
-    <PageContainer scrollable>
+    <PageContainer scrollable={false}>
       <div className='flex flex-1 flex-col space-y-4'>
         <UserHeader />
         <Separator />

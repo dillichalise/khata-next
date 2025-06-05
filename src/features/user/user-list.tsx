@@ -18,8 +18,6 @@ export default function UserList() {
 
   if (isLoading) return <DataTableSkeleton columnCount={5} rowCount={10} />;
   return (
-    <div>
-      <DataTable columns={userColumns} data={users} totalItems={users.length} />
-    </div>
+    <DataTable columns={userColumns} data={users} totalItems={users.length} />
   );
 }

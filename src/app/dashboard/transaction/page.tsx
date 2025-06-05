@@ -6,7 +6,7 @@ import { AddTransactionDialog } from '@/features/transaction/components/add-tran
 
 export default async function TransactionPage() {
   return (
-    <PageContainer scrollable>
+    <PageContainer scrollable={false}>
       <div className='flex flex-1 flex-col space-y-4'>
         <div className='flex items-start justify-between'>
           <Heading title='Transaction' description='Manage transactions' />

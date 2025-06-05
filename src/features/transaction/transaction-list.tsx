@@ -23,12 +23,10 @@ export default function TransactionList() {
   if (isLoading) return <DataTableSkeleton columnCount={5} rowCount={10} />;
 
   return (
-    <div>
-      <DataTable
-        columns={columns}
-        data={transactions}
-        totalItems={data?.data?.total || 0}
-      />
-    </div>
+    <DataTable
+      columns={columns}
+      data={transactions}
+      totalItems={data?.data?.total || 0}
+    />
   );
 }
