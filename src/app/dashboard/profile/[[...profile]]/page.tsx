@@ -12,7 +12,7 @@ export default async function Page() {
   const { userId } = await auth();
   const user = await getAuthenticatedUserData(userId!);
 
-  if (!isAdmin(user.role)) {
+  if (user && !isAdmin(user?.role)) {
     redirect('/unauthorized');
   }
 
