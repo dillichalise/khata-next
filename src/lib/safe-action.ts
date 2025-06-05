@@ -1,5 +1,5 @@
 import { createSafeActionClient } from 'next-safe-action';
-import { checkUserAdminPermission } from '@/lib/authorization';
+import { checkUserRole, isAdmin } from '@/lib/authorization';
 import { auth } from '@clerk/nextjs/server';
 
 export const actionClient = createSafeActionClient();
@@ -17,7 +17,9 @@ export const authActionClient = actionClient.use(async ({ next, ctx }) => {
 });
 
 export const authAdminClient = authActionClient.use(async ({ next, ctx }) => {
-  const { role } = await checkUserAdminPermission();
+  const { role } = await checkUserRole();
+
+  if (!isAdmin(role)) throw new Error('Unauthorized');
 
   return next({
     ctx: {
