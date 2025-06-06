@@ -30,15 +30,17 @@ export default function TransactionList() {
       getRowClassName={(row) => {
         switch (row.type) {
           case 'LOAN':
-            return 'bg-[#4F8FC6]/60'; // Soft Blue - calming, financial action
+            return 'bg-blue-50 hover:bg-blue-100 dark:bg-blue-950/20 dark:hover:bg-blue-950/30';
           case 'INTEREST':
-            return 'bg-[#7FB77E]/60'; // Muted Green - growth, earnings
+            return 'bg-green-50 hover:bg-green-100 dark:bg-green-950/20 dark:hover:bg-green-950/30';
           case 'LOAN_RETURN':
-            return 'bg-[#FFCB6B]/60'; // Warm Yellow - return, caution
+            return 'bg-yellow-50 hover:bg-yellow-100 dark:bg-yellow-950/20 dark:hover:bg-yellow-950/30';
           case 'FINE':
-            return 'bg-[#E57373]/60'; // Coral Red - warning but not too harsh
+            return 'bg-red-50 hover:bg-red-100 dark:bg-red-950/20 dark:hover:bg-red-950/30';
+          case 'MONTHLY_SAVING':
+            return 'bg-purple-50 hover:bg-purple-100 dark:bg-purple-950/20 dark:hover:bg-purple-950/30';
           default:
-            return 'bg-[#E0E0E0]/60'; // Light Gray - neutral default
+            return 'bg-gray-50 hover:bg-gray-100 dark:bg-gray-950/20 dark:hover:bg-gray-950/30';
         }
       }}
     />
