@@ -32,12 +32,10 @@ export default function UserMonthlySaving() {
   if (isLoading) return <Skeleton />;
 
   return (
-    <div>
-      <DataTable
-        columns={monthlySavingColumns}
-        data={transactions}
-        totalItems={data?.data?.total || 0}
-      />
-    </div>
+    <DataTable
+      columns={monthlySavingColumns}
+      data={transactions}
+      totalItems={data?.data?.total || 0}
+    />
   );
 }

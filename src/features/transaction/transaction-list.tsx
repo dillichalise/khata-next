@@ -27,6 +27,20 @@ export default function TransactionList() {
       columns={columns}
       data={transactions}
       totalItems={data?.data?.total || 0}
+      getRowClassName={(row) => {
+        switch (row.type) {
+          case 'LOAN':
+            return 'bg-[#4F8FC6]/60'; // Soft Blue - calming, financial action
+          case 'INTEREST':
+            return 'bg-[#7FB77E]/60'; // Muted Green - growth, earnings
+          case 'LOAN_RETURN':
+            return 'bg-[#FFCB6B]/60'; // Warm Yellow - return, caution
+          case 'FINE':
+            return 'bg-[#E57373]/60'; // Coral Red - warning but not too harsh
+          default:
+            return 'bg-[#E0E0E0]/60'; // Light Gray - neutral default
+        }
+      }}
     />
   );
 }

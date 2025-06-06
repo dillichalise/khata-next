@@ -5,11 +5,9 @@ import React from 'react';
 import { useUser } from '@/context/user-context';
 
 export default function OverViewLayout({
-  user_transaction_summary,
   overall_transaction_summary,
   user_account_summary
 }: {
-  user_transaction_summary: React.ReactNode;
   overall_transaction_summary: React.ReactNode;
   user_account_summary: React.ReactNode;
 }) {
@@ -26,7 +24,6 @@ export default function OverViewLayout({
 
         <div>{user_account_summary}</div>
         <div className='mb-4'>{overall_transaction_summary}</div>
-        <div>{user_transaction_summary}</div>
       </div>
     </PageContainer>
   );
