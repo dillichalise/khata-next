@@ -4,10 +4,13 @@ import { AddTransactionDialog } from '@/features/transaction/components/add-tran
 
 export default async function TransactionPage() {
   return (
-    <div className='px-4'>
+    <div className='container mx-auto px-4 py-8'>
       <div className='flex flex-1 flex-col space-y-4'>
         <div className='flex items-start justify-between'>
-          <Heading title='Transaction' description='Manage transactions' />
+          <Heading
+            title='Transactions'
+            description='Manage all financial transactions'
+          />
           <AddTransactionDialog />
         </div>
         <TransactionList />
