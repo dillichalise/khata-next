@@ -27,6 +27,20 @@ export default function TransactionList() {
       columns={columns}
       data={transactions}
       totalItems={data?.data?.total || 0}
+      getRowClassName={(row) => {
+        switch (row.type) {
+          case 'LOAN':
+            return 'bg-[#70a7dc]/60';
+          case 'INTEREST':
+            return 'bg-[#93c47d]/60';
+          case 'LOAN_RETURN':
+            return 'bg-[#ffd966]/60';
+          case 'FINE':
+            return 'bg-[#e06969]/60';
+          default:
+            return 'bg-[#f3f3f3]/60';
+        }
+      }}
     />
   );
 }

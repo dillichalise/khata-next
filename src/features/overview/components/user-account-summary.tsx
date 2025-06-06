@@ -18,11 +18,11 @@ export default function UserAccountSummary({ userId }: { userId?: number }) {
   return (
     <div className='mb-4 flex w-full flex-col gap-2 text-lg font-semibold'>
       <div>{data?.data?.name}</div>
-      <Card className='m-0 w-full bg-yellow-700 px-4 py-2'>
+      <Card className='m-0 w-full bg-yellow-700 px-4 py-2 text-white'>
         You have remaining loan amount of{' '}
         {formatCurrency(+data?.data?.remainingLoan)}
       </Card>
-      <Card className='m-0 w-full bg-red-700 px-4 py-2'>
+      <Card className='m-0 w-full bg-red-700 px-4 py-2 text-white'>
         You have {formatCurrency(+data?.data?.totalInterest)} remaining interest
         as of today.
       </Card>
