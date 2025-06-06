@@ -30,15 +30,15 @@ export default function TransactionList() {
       getRowClassName={(row) => {
         switch (row.type) {
           case 'LOAN':
-            return 'bg-[#70a7dc]/60';
+            return 'bg-[#4F8FC6]/60'; // Soft Blue - calming, financial action
           case 'INTEREST':
-            return 'bg-[#93c47d]/60';
+            return 'bg-[#7FB77E]/60'; // Muted Green - growth, earnings
           case 'LOAN_RETURN':
-            return 'bg-[#ffd966]/60';
+            return 'bg-[#FFCB6B]/60'; // Warm Yellow - return, caution
           case 'FINE':
-            return 'bg-[#e06969]/60';
+            return 'bg-[#E57373]/60'; // Coral Red - warning but not too harsh
           default:
-            return 'bg-[#f3f3f3]/60';
+            return 'bg-[#E0E0E0]/60'; // Light Gray - neutral default
         }
       }}
     />

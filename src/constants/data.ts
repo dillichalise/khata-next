@@ -26,5 +26,13 @@ export const navItems: NavItem[] = [
     shortcut: ['u', 'u'],
     isActive: false,
     items: [] // No child items
+  },
+  {
+    title: 'Summary',
+    url: '/dashboard/summary',
+    icon: 'summary',
+    shortcut: ['s', 's'],
+    isActive: false,
+    items: [] // No child items
   }
 ];
