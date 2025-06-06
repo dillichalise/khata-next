@@ -3,6 +3,7 @@
 import { User } from '@prisma/client';
 import { ColumnDef } from '@tanstack/react-table';
 import Link from 'next/link';
+import { maskEmail, maskPhoneNumber } from '@/lib/utils';
 
 export const userColumns: ColumnDef<User>[] = [
   {
@@ -20,11 +21,13 @@ export const userColumns: ColumnDef<User>[] = [
   },
   {
     accessorKey: 'email',
-    header: 'Email'
+    header: 'Email',
+    cell: ({ row }) => maskEmail(row?.original.email)
   },
   {
     accessorKey: 'phoneNumber',
-    header: 'Phone Number'
+    header: 'Phone Number',
+    cell: ({ row }) => maskPhoneNumber(row?.original.phoneNumber)
   },
   {
     accessorKey: 'status',
