@@ -39,3 +39,19 @@ export function maskEmail(email: string): string {
 
   return `${firstTwo}${maskedMiddle}${lastTwo}@${domain}`;
 }
+
+export function maskPhoneNumber(phone: string): string {
+  // Remove non-digit characters for consistent masking
+  const digitsOnly = phone.replace(/\D/g, '');
+
+  if (digitsOnly.length <= 6) {
+    // Not enough characters to mask properly
+    return digitsOnly[0] + '*'.repeat(digitsOnly.length - 1);
+  }
+
+  const firstFour = digitsOnly.slice(0, 4);
+  const lastTwo = digitsOnly.slice(-2);
+  const maskedMiddle = '*'.repeat(digitsOnly.length - 5);
+
+  return `${firstFour}${maskedMiddle}${lastTwo}`;
+}
