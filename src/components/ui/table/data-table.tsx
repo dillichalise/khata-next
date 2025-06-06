@@ -6,7 +6,8 @@ import {
   ChevronsLeft,
   ChevronsRight
 } from 'lucide-react';
-import { parseAsInteger, useQueryState } from 'nuqs';
+import { useSearchParams, useRouter, usePathname } from 'next/navigation';
+import { useCallback } from 'react';
 import {
   type ColumnDef,
   flexRender,
@@ -31,8 +32,6 @@ import {
   SelectValue
 } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
-import { getCommonPinningStyles } from '@/lib/data-table';
-import { ScrollArea, ScrollBar } from '../scroll-area';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -49,15 +48,28 @@ export function DataTable<TData, TValue>({
   pageSizeOptions = [10, 20, 30, 40, 50],
   getRowClassName
 }: DataTableProps<TData, TValue>) {
-  const [currentPage, setCurrentPage] = useQueryState(
-    'page',
-    parseAsInteger.withOptions({ shallow: false }).withDefault(1)
-  );
-  const [pageSize, setPageSize] = useQueryState(
-    'limit',
-    parseAsInteger
-      .withOptions({ shallow: false, history: 'push' })
-      .withDefault(10)
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const currentPage = Number.parseInt(searchParams.get('page') || '1', 10);
+  const pageSize = Number.parseInt(searchParams.get('limit') || '10', 10);
+
+  const updateParams = useCallback(
+    (newParams: Record<string, string>) => {
+      const params = new URLSearchParams(searchParams.toString());
+
+      Object.entries(newParams).forEach(([key, value]) => {
+        if (value) {
+          params.set(key, value);
+        } else {
+          params.delete(key);
+        }
+      });
+
+      router.push(`${pathname}?${params.toString()}`);
+    },
+    [searchParams, router, pathname]
   );
 
   const paginationState = {
@@ -77,8 +89,10 @@ export function DataTable<TData, TValue>({
         ? updaterOrValue(paginationState)
         : updaterOrValue;
 
-    setCurrentPage(pagination.pageIndex + 1);
-    setPageSize(pagination.pageSize);
+    updateParams({
+      page: (pagination.pageIndex + 1).toString(),
+      limit: pagination.pageSize.toString()
+    });
   };
 
   const table = useReactTable({
@@ -96,121 +110,90 @@ export function DataTable<TData, TValue>({
   });
 
   return (
-    <div className='flex flex-1 flex-col space-y-2'>
-      <div className='relative flex flex-1 border-y'>
-        <div className='absolute inset-0 flex overflow-hidden rounded-lg border'>
-          <ScrollArea className='h-full w-full'>
-            <Table className='relative'>
-              <TableHeader className='bg-muted sticky top-0 z-10'>
-                {table.getHeaderGroups().map((headerGroup) => (
-                  <TableRow key={headerGroup.id}>
-                    {headerGroup.headers.map((header) => (
-                      <TableHead
-                        key={header.id}
-                        colSpan={header.colSpan}
-                        style={{
-                          ...getCommonPinningStyles({ column: header.column })
-                        }}
-                      >
-                        {header.isPlaceholder
-                          ? null
-                          : flexRender(
-                              header.column.columnDef.header,
-                              header.getContext()
-                            )}
-                      </TableHead>
+    <div className='space-y-4'>
+      {/* Table Container - Simplified CSS */}
+      <div className='rounded-md border'>
+        <Table>
+          <TableHeader>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow key={headerGroup.id}>
+                {headerGroup.headers.map((header) => (
+                  <TableHead key={header.id} colSpan={header.colSpan}>
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                  </TableHead>
+                ))}
+              </TableRow>
+            ))}
+          </TableHeader>
+          <TableBody>
+            {table.getRowModel().rows?.length ? (
+              table.getRowModel().rows.map((row) => {
+                const rowClassName = getRowClassName?.(row.original) ?? '';
+
+                return (
+                  <TableRow
+                    key={row.id}
+                    data-state={row.getIsSelected() && 'selected'}
+                    className={rowClassName}
+                  >
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </TableCell>
                     ))}
                   </TableRow>
-                ))}
-              </TableHeader>
-              <TableBody>
-                {table.getRowModel().rows?.length ? (
-                  table.getRowModel().rows.map((row) => {
-                    const rowClassName = getRowClassName?.(row.original) ?? '';
-
-                    return (
-                      <TableRow
-                        key={row.id}
-                        data-state={row.getIsSelected() && 'selected'}
-                        className={rowClassName}
-                      >
-                        {row.getVisibleCells().map((cell) => (
-                          <TableCell
-                            key={cell.id}
-                            style={{
-                              ...getCommonPinningStyles({ column: cell.column })
-                            }}
-                          >
-                            {flexRender(
-                              cell.column.columnDef.cell,
-                              cell.getContext()
-                            )}
-                          </TableCell>
-                        ))}
-                      </TableRow>
-                    );
-                  })
-                ) : (
-                  <TableRow>
-                    <TableCell
-                      colSpan={table.getAllColumns().length}
-                      className='h-24 text-center'
-                    >
-                      No results.
-                    </TableCell>
-                  </TableRow>
-                )}
-              </TableBody>
-            </Table>
-            <ScrollBar orientation='horizontal' />
-          </ScrollArea>
-        </div>
+                );
+              })
+            ) : (
+              <TableRow>
+                <TableCell
+                  colSpan={table.getAllColumns().length}
+                  className='h-24 text-center'
+                >
+                  No results.
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
       </div>
 
-      <div className='flex flex-col items-center justify-end gap-2 space-x-2 px-4 py-2 sm:flex-row'>
-        <div className='flex w-full items-center justify-between'>
-          <div className='text-muted-foreground flex-1 text-sm'>
-            {totalItems > 0 ? (
-              <>
-                Showing{' '}
-                {paginationState.pageIndex * paginationState.pageSize + 1} to{' '}
-                {Math.min(
-                  (paginationState.pageIndex + 1) * paginationState.pageSize,
-                  totalItems
-                )}{' '}
-                of {totalItems} entries
-              </>
-            ) : (
-              'No entries found'
-            )}
+      {/* Pagination Controls */}
+      <div className='flex items-center justify-end px-2'>
+        <div className='mr-4 flex items-center space-x-6 lg:space-x-8'>
+          <div className='flex items-center space-x-2'>
+            <p className='text-sm font-medium'>Rows per page</p>
+            <Select
+              value={`${paginationState.pageSize}`}
+              onValueChange={(value) => {
+                updateParams({
+                  page: '1', // Reset to first page when changing page size
+                  limit: value
+                });
+              }}
+            >
+              <SelectTrigger className='h-8 w-[70px]'>
+                <SelectValue placeholder={paginationState.pageSize} />
+              </SelectTrigger>
+              <SelectContent side='top'>
+                {pageSizeOptions.map((pageSize) => (
+                  <SelectItem key={pageSize} value={`${pageSize}`}>
+                    {pageSize}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
-          <div className='flex flex-col items-center gap-4 sm:flex-row sm:gap-6 lg:gap-8'>
-            <div className='flex items-center space-x-2'>
-              <p className='text-sm font-medium whitespace-nowrap'>
-                Rows per page
-              </p>
-              <Select
-                value={`${paginationState.pageSize}`}
-                onValueChange={(value) => {
-                  table.setPageSize(Number(value));
-                }}
-              >
-                <SelectTrigger className='h-8 w-[70px]'>
-                  <SelectValue placeholder={paginationState.pageSize} />
-                </SelectTrigger>
-                <SelectContent side='top'>
-                  {pageSizeOptions.map((pageSize) => (
-                    <SelectItem key={pageSize} value={`${pageSize}`}>
-                      {pageSize}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-        </div>
-        <div className='flex w-full items-center justify-between gap-2 sm:justify-end'>
-          <div className='flex w-[150px] items-center justify-center text-sm font-medium'>
+
+          <div className='flex w-[100px] items-center justify-center text-sm font-medium'>
             {totalItems > 0 ? (
               <>
                 Page {paginationState.pageIndex + 1} of {table.getPageCount()}
@@ -219,42 +202,47 @@ export function DataTable<TData, TValue>({
               'No pages'
             )}
           </div>
+
           <div className='flex items-center space-x-2'>
             <Button
-              aria-label='Go to first page'
               variant='outline'
               className='hidden h-8 w-8 p-0 lg:flex'
-              onClick={() => table.setPageIndex(0)}
+              onClick={() => updateParams({ page: '1' })}
               disabled={!table.getCanPreviousPage()}
             >
-              <ChevronsLeft className='h-4 w-4' aria-hidden='true' />
+              <span className='sr-only'>Go to first page</span>
+              <ChevronsLeft className='h-4 w-4' />
             </Button>
             <Button
-              aria-label='Go to previous page'
               variant='outline'
               className='h-8 w-8 p-0'
-              onClick={() => table.previousPage()}
+              onClick={() =>
+                updateParams({ page: (currentPage - 1).toString() })
+              }
               disabled={!table.getCanPreviousPage()}
             >
-              <ChevronLeftIcon className='h-4 w-4' aria-hidden='true' />
+              <span className='sr-only'>Go to previous page</span>
+              <ChevronLeftIcon className='h-4 w-4' />
             </Button>
             <Button
-              aria-label='Go to next page'
               variant='outline'
               className='h-8 w-8 p-0'
-              onClick={() => table.nextPage()}
+              onClick={() =>
+                updateParams({ page: (currentPage + 1).toString() })
+              }
               disabled={!table.getCanNextPage()}
             >
-              <ChevronRightIcon className='h-4 w-4' aria-hidden='true' />
+              <span className='sr-only'>Go to next page</span>
+              <ChevronRightIcon className='h-4 w-4' />
             </Button>
             <Button
-              aria-label='Go to last page'
               variant='outline'
               className='hidden h-8 w-8 p-0 lg:flex'
-              onClick={() => table.setPageIndex(table.getPageCount() - 1)}
+              onClick={() => updateParams({ page: pageCount.toString() })}
               disabled={!table.getCanNextPage()}
             >
-              <ChevronsRight className='h-4 w-4' aria-hidden='true' />
+              <span className='sr-only'>Go to last page</span>
+              <ChevronsRight className='h-4 w-4' />
             </Button>
           </div>
         </div>

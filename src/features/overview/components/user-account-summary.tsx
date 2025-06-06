@@ -16,7 +16,7 @@ export default function UserAccountSummary({ userId }: { userId?: number }) {
   if (isLoading) return <UserAccountSummarySkeleton />;
 
   return (
-    <div className='mb-4 flex w-full flex-col gap-2 text-lg font-semibold'>
+    <div className='mr-6 mb-4 flex flex-col gap-2 text-lg font-semibold'>
       <div>{data?.data?.name}</div>
       <Card className='m-0 w-full bg-yellow-700 px-4 py-2 text-white'>
         You have remaining loan amount of{' '}
