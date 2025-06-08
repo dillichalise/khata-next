@@ -146,7 +146,6 @@ export function UserTransactionSummary() {
                   <TableHead className='text-right'>Interest Paid</TableHead>
                   <TableHead className='text-right'>Fine Paid</TableHead>
                   <TableHead className='text-right'>Remaining Loan</TableHead>
-                  <TableHead className='text-center'>Status</TableHead>
                   <TableHead className='text-center'>Actions</TableHead>
                 </TableRow>
               </TableHeader>
@@ -162,8 +161,8 @@ export function UserTransactionSummary() {
                       <TableCell>
                         <div className='space-y-1'>
                           <Link
-                            href={`/user/${user.userId}`}
-                            className='text-primary flex items-center gap-1 font-medium hover:underline'
+                            href={`/dashboard/user/${user.userId}`}
+                            className='flex items-center gap-1 font-medium hover:underline'
                           >
                             {user.fullName}
                             <ExternalLink className='h-3 w-3' />
@@ -208,11 +207,8 @@ export function UserTransactionSummary() {
                         </div>
                       </TableCell>
                       <TableCell className='text-center'>
-                        <Badge variant='default'>ACTIVE</Badge>
-                      </TableCell>
-                      <TableCell className='text-center'>
                         <Button asChild variant='outline' size='sm'>
-                          <Link href={`/user/${user.userId}`}>
+                          <Link href={`/dashboard/user/${user.userId}`}>
                             View Details
                           </Link>
                         </Button>

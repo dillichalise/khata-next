@@ -37,6 +37,18 @@ export default function UserLoan() {
         columns={loanHistoryColumns}
         data={loanHistories}
         totalItems={userLoanHistory?.data?.total || 0}
+        getRowClassName={(row) => {
+          switch (row.description) {
+            case 'LOAN':
+              return 'bg-blue-200 hover:bg-blue-400 dark:bg-blue-950/20 dark:hover:bg-blue-950/30';
+            case 'INTEREST':
+              return 'bg-red-200 hover:bg-red-400 dark:bg-red-800/20 dark:hover:bg-red-700/30';
+            case 'LOAN_RETURN':
+              return 'bg-cyan-100 hover:bg-cyan-200 dark:bg-cyan-500/20 dark:hover:bg-cyan-900/30';
+            default:
+              return 'bg-gray-50 hover:bg-gray-100 dark:bg-gray-950/20 dark:hover:bg-gray-950/30';
+          }
+        }}
       />
     </div>
   );
