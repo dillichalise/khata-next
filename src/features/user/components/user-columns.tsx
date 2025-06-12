@@ -4,6 +4,7 @@ import { User } from '@prisma/client';
 import { ColumnDef } from '@tanstack/react-table';
 import Link from 'next/link';
 import { maskEmail, maskPhoneNumber } from '@/lib/utils';
+import { Badge } from '@/components/ui/badge';
 
 export const userColumns: ColumnDef<User>[] = [
   {
@@ -31,6 +32,10 @@ export const userColumns: ColumnDef<User>[] = [
   },
   {
     accessorKey: 'status',
-    header: 'Status'
+    header: 'Status',
+    cell: ({ row }) => {
+      const status = row.original.status;
+      return <Badge variant='success'>{status}</Badge>;
+    }
   }
 ];

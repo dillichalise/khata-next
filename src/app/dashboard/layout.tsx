@@ -9,6 +9,7 @@ import { auth } from '@clerk/nextjs/server';
 import NoAccessPage from '@/app/dashboard/no-access/page';
 import { UserStatus } from '@prisma/client';
 import { UserProvider } from '@/context/user-context';
+import MobileNav from '@/components/layout/mobile-nav';
 
 export const metadata: Metadata = {
   title: 'Next Shadcn Dashboard Starter',
@@ -35,10 +36,11 @@ export default async function DashboardLayout({
           <UserProvider user={user}>
             {/* page main content */}
             {user && user.status === UserStatus.ACTIVE ? (
-              children
+              <div className='pb-12'>{children}</div>
             ) : (
               <NoAccessPage />
             )}
+            <MobileNav />
             {/* page main content ends */}
           </UserProvider>
         </SidebarInset>
