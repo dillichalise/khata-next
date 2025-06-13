@@ -23,6 +23,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Separator } from '@/components/ui/separator';
 
 export function UserTransactionSummary() {
   const { data, isLoading } = useQuery({
@@ -35,6 +36,29 @@ export function UserTransactionSummary() {
   }
 
   const users = data?.data || [];
+
+  const totalInterest = users.reduce(
+    (sum, user) => sum + Number(user.totalInterestPaid),
+    0
+  );
+
+  const totalFines = users.reduce(
+    (sum, user) => sum + Number(user.totalFinePaid),
+    0
+  );
+
+  const totalLoans = users.reduce(
+    (sum, user) => sum + Number(user.remainingLoan),
+    0
+  );
+
+  const totalSavings = users.reduce(
+    (sum, user) => sum + Number(user.totalSavings),
+    0
+  );
+
+  const overallCollection = totalSavings + totalFines + totalInterest;
+  const remainingBankBalance = overallCollection - totalLoans;
 
   return (
     <div className='space-y-4'>
@@ -223,40 +247,31 @@ export function UserTransactionSummary() {
       </div>
 
       {/* Summary Statistics */}
-      <div className='grid grid-cols-2 gap-4 border pt-4 md:grid-cols-4'>
+      <div className='grid grid-cols-1 gap-4 border pt-4 md:grid-cols-3'>
         <div className='text-center'>
-          <p className='text-muted-foreground text-sm'>Total Savings</p>
-          <p className='text-lg font-semibold text-green-600'>
-            {formatCurrency(
-              users.reduce((sum, user) => sum + Number(user.totalSavings), 0)
-            )}
+          <p className='text-muted-foreground text-sm'>
+            Total collected Amount
+          </p>
+          <p className='text-lg font-semibold text-orange-600'>
+            {formatCurrency(overallCollection)}
           </p>
         </div>
+        <Separator />
+
         <div className='text-center'>
           <p className='text-muted-foreground text-sm'>Total Loans</p>
           <p className='text-lg font-semibold text-red-600'>
-            {formatCurrency(
-              users.reduce((sum, user) => sum + Number(user.remainingLoan), 0)
-            )}
+            {formatCurrency(totalLoans)}
           </p>
         </div>
+        <Separator />
+
         <div className='text-center'>
-          <p className='text-muted-foreground text-sm'>Total Interest</p>
-          <p className='text-lg font-semibold'>
-            {formatCurrency(
-              users.reduce(
-                (sum, user) => sum + Number(user.totalInterestPaid),
-                0
-              )
-            )}
+          <p className='text-muted-foreground text-sm'>
+            Remaining Bank Balance
           </p>
-        </div>
-        <div className='text-center'>
-          <p className='text-muted-foreground text-sm'>Total Fines</p>
-          <p className='text-lg font-semibold text-orange-600'>
-            {formatCurrency(
-              users.reduce((sum, user) => sum + Number(user.totalFinePaid), 0)
-            )}
+          <p className='text-lg font-semibold text-green-600'>
+            {formatCurrency(remainingBankBalance)}
           </p>
         </div>
       </div>
