@@ -22,6 +22,8 @@ export const transactionSchema = z.object({
   action: TransactionActionEnum,
   type: TransactionTypeEnum,
   amount: z.coerce.number({ message: 'Required' }),
+  interestAmount: z.coerce.number(),
+  loanReturnAmount: z.coerce.number(),
   remarks: z.string().optional(),
   createdAt: z.date().optional(),
   updatedAt: z.date().optional(),
@@ -61,7 +63,9 @@ export const createTransactionSchema = transactionSchema.pick({
   action: true,
   type: true,
   amount: true,
-  remarks: true
+  remarks: true,
+  loanReturnAmount: true,
+  interestAmount: true
 });
 
 const TypeEnum = z.enum([TransactionType.LOAN, TransactionType.MONTHLY_SAVING]);

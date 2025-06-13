@@ -1,8 +1,8 @@
 import { db } from '@/db/lib';
 import {
-  TCreateTransactionSchema,
   TListUserTransactionsSchema,
-  TListTransactionSchema
+  TListTransactionSchema,
+  TCreateTransactionSchema
 } from '@/schema/transaction.schema';
 
 export function getAllTransactions(data: TListTransactionSchema) {
@@ -13,8 +13,8 @@ export function getTransactionsByUserId(data: TListUserTransactionsSchema) {
   return db.transactions.getUserTransactions(data);
 }
 
-export function createTransaction(data: TCreateTransactionSchema) {
-  return db.transactions.createTransaction(data);
+export async function createTransaction(data: TCreateTransactionSchema) {
+  return db.transactions.createCombinedTransactions(data);
 }
 
 export function getLoanHistoryByUserId(data: TListUserTransactionsSchema) {

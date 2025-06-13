@@ -6,7 +6,7 @@ import {
   TCreateTransactionSchema
 } from '@/schema/transaction.schema';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { TransactionAction, UserStatus } from '@prisma/client';
+import { TransactionAction, TransactionType, UserStatus } from '@prisma/client';
 import { Card, CardContent } from '@/components/ui/card';
 import {
   Form,
@@ -33,12 +33,17 @@ import {
 } from '@/components/ui/popover';
 import { format } from 'date-fns';
 import { useAction } from 'next-safe-action/hooks';
-import { TRANSACTIONS, USERS } from '@/constants/keys';
+import { TRANSACTIONS, USER_ACCOUNT_SUMMARY, USERS } from '@/constants/keys';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { getTransactionTypeOptions } from '@/features/options';
-import { getAllUsersAction, createTransactionAction } from '@/actions';
+import {
+  getAllUsersAction,
+  createTransactionAction,
+  getUserAccountSummaryAction
+} from '@/actions';
 import { CalendarIcon } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { cn, roundDecimal } from '@/lib/utils';
+import { useEffect } from 'react';
 
 type CreateTransactionFormProps = {
   onSuccess?: () => void;
@@ -61,6 +66,8 @@ export default function CreateTransactionForm({
       action: TransactionAction.DEPOSIT,
       type: undefined,
       amount: 0,
+      interestAmount: 0,
+      loanReturnAmount: 0,
       date: new Date()
     }
   });
@@ -68,6 +75,69 @@ export default function CreateTransactionForm({
   const { executeAsync, isExecuting, isPending } = useAction(
     createTransactionAction
   );
+
+  const selectedAction = form.watch('action');
+  const selectedType = form.watch('type');
+  const userId = form.watch('userId');
+  const depositedTotal = Number(form.watch('amount'));
+  const selectedDate = form.watch('date');
+
+  const { refetch } = useQuery({
+    queryKey: [USER_ACCOUNT_SUMMARY],
+    queryFn: () =>
+      getUserAccountSummaryAction({ userId: +userId, date: selectedDate })
+  });
+
+  const TransactionTypeOptions = getTransactionTypeOptions(selectedAction);
+
+  const userOptions = userData?.data?.map((item) => ({
+    value: item.id,
+    label: `${item.firstName} ${item.lastName}`
+  }));
+
+  const fetchAndSetAmount = async () => {
+    try {
+      const result = await refetch();
+
+      if (result.data) {
+        const interestToPay = roundDecimal(
+          result?.data?.data?.totalInterest || 0.0
+        );
+
+        form.setValue('interestAmount', interestToPay, {
+          shouldValidate: true
+        });
+        if (depositedTotal >= interestToPay) {
+          form.setValue(
+            'loanReturnAmount',
+            roundDecimal(depositedTotal - interestToPay)
+          );
+          form.clearErrors('amount');
+        } else {
+          form.setError('amount', {
+            message:
+              'Deposit amount must be greater than or equal to interest to be paid.'
+          });
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching amount:', error);
+    }
+  };
+
+  useEffect(() => {
+    if (selectedType !== TransactionType.INTEREST || !userId) return;
+    fetchAndSetAmount();
+  }, [userId, selectedType, depositedTotal, selectedDate]);
+
+  useEffect(() => {
+    if (selectedType === TransactionType.MONTHLY_SAVING) {
+      form.setValue('amount', 20000);
+      form.resetField('interestAmount');
+      form.resetField('loanReturnAmount');
+      form.clearErrors('amount');
+    } else form.resetField('amount');
+  }, [selectedType]);
 
   async function onSubmit(submitValue: TCreateTransactionSchema) {
     executeAsync(submitValue)
@@ -81,17 +151,6 @@ export default function CreateTransactionForm({
         console.error('Error while creating transaction', err);
       });
   }
-
-  const TransactionTypeOptions = getTransactionTypeOptions(
-    form.getValues('action')
-  );
-
-  const userOptions = userData?.data?.map((item) => ({
-    value: item.id,
-    label: `${item.firstName} ${item.lastName}`
-  }));
-
-  form.watch(['action']);
 
   return (
     <Card className='mx-auto w-full'>
@@ -143,6 +202,10 @@ export default function CreateTransactionForm({
                         onClick={() => {
                           field.onChange(TransactionAction.DEPOSIT);
                           form.resetField('type');
+                          // form.resetField('type', {
+                          //   keepTouched: false,
+                          //   keepDirty: false
+                          // });
                         }}
                       >
                         {TransactionAction.DEPOSIT}
@@ -157,6 +220,10 @@ export default function CreateTransactionForm({
                         onClick={() => {
                           field.onChange(TransactionAction.WITHDRAW);
                           form.resetField('type');
+                          // form.resetField('type', {
+                          //   keepTouched: false,
+                          //   keepDirty: false
+                          // });
                         }}
                       >
                         {TransactionAction.WITHDRAW}
@@ -201,25 +268,11 @@ export default function CreateTransactionForm({
 
             <FormField
               control={form.control}
-              name='amount'
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Amount</FormLabel>
-                  <FormControl>
-                    <Input placeholder='Enter transaction amount' {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
               name='date'
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Date</FormLabel>
-                  <Popover>
+                  <Popover modal={false}>
                     <PopoverTrigger asChild>
                       <FormControl>
                         <Button
@@ -238,7 +291,10 @@ export default function CreateTransactionForm({
                       </FormControl>
                     </PopoverTrigger>
 
-                    <PopoverContent className='w-auto p-0' align='start'>
+                    <PopoverContent
+                      className='z-[999] w-auto p-0'
+                      align='start'
+                    >
                       <Calendar
                         mode='single'
                         selected={field.value}
@@ -248,13 +304,73 @@ export default function CreateTransactionForm({
                       />
                     </PopoverContent>
                   </Popover>
+
                   <FormMessage />
                 </FormItem>
               )}
             />
 
+            <FormField
+              control={form.control}
+              name='amount'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>
+                    {selectedType === TransactionType.INTEREST
+                      ? 'Total Amount'
+                      : 'Amount'}
+                  </FormLabel>
+                  <FormControl>
+                    <Input placeholder='Enter transaction amount' {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {selectedType === TransactionType.INTEREST && (
+              <div className='flex justify-between'>
+                <FormField
+                  control={form.control}
+                  name='interestAmount'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Interest Amount</FormLabel>
+                      <FormControl>
+                        <Input
+                          disabled={true}
+                          placeholder='Enter Interest amount'
+                          {...field}
+                          value={field?.value ?? 0}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name='loanReturnAmount'
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Loan Return Amount</FormLabel>
+                      <FormControl>
+                        <Input
+                          disabled={true}
+                          placeholder='Enter Loan return amount'
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            )}
+
             <Button
-              disabled={isPending || isExecuting}
+              disabled={isPending || isExecuting || form.formState.isSubmitting}
               type='submit'
               className='h-12 w-full cursor-pointer bg-blue-700/80 hover:bg-blue-600/80'
             >

@@ -25,8 +25,11 @@ export const getOverallTransactionSummaryAction = authActionClient
   });
 
 export const getUserAccountSummaryAction = authActionClient
-  .schema(z.object({ userId: z.number() }))
+  .schema(z.object({ userId: z.number(), date: z.coerce.date().optional() }))
   .action(async ({ parsedInput }) => {
-    const response = await core.summary.getUserSummary(parsedInput.userId);
+    const response = await core.summary.getUserSummary(
+      parsedInput.userId,
+      parsedInput.date
+    );
     return SuperJSON.parse(SuperJSON.stringify(response)) as unknown as any;
   });
