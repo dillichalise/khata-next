@@ -68,7 +68,7 @@ export default function MobileNav() {
                 <Link
                   href={href}
                   className={`relative flex h-full flex-col items-center justify-center ${
-                    isActive ? 'text-[#FFFFFF]' : 'text-[#888888]'
+                    isActive ? 'text-orange-300' : 'text-[#AAAAAA]'
                   }`}
                 >
                   {isActive ? (
