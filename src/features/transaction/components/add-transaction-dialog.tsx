@@ -20,7 +20,7 @@ export function AddTransactionDialog() {
   const isAdmin = user?.role === UserType.ADMIN;
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={open} onOpenChange={setOpen} modal={false}>
       <DialogTitle></DialogTitle>
       <DialogTrigger asChild>
         {isAdmin && (

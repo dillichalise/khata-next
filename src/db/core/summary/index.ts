@@ -11,10 +11,10 @@ export function getUserTransactionSummary() {
 export function getTransactionSummary() {
   return db.summary.getTransactionSummaryFromUserSummary();
 }
-export async function getUserSummary(userId: number) {
+export async function getUserSummary(userId: number, toDate?: Date) {
   const user = await db.users.getUserById(userId);
 
-  const today = new Date();
+  const today = toDate ? new Date(toDate) : new Date();
 
   const latestInterestPaidData =
     await db.summary.getLatestInterestPaidData(userId);

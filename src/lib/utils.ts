@@ -55,3 +55,14 @@ export function maskPhoneNumber(phone: string): string {
 
   return `${firstFour}${maskedMiddle}${lastTwo}`;
 }
+
+/**
+ * Rounds a decimal number to the specified number of decimal places.
+ * @param value - A number with decimal places.
+ * @param precision - Number of decimal places to round to. Default is 0.
+ * @returns The rounded number.
+ */
+export function roundDecimal(value: number, precision: number = 0): number {
+  const multiplier = Math.pow(10, precision);
+  return Math.round(value * multiplier) / multiplier;
+}
