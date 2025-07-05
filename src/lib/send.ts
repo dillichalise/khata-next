@@ -1,5 +1,3 @@
-'use server';
-
 import { Resend } from 'resend';
 
 interface ISendEmail {
@@ -8,10 +6,9 @@ interface ISendEmail {
   template: React.ReactNode;
 }
 
-const resend = new Resend(process.env.RESEND_API_KEY as string);
-
 export const sendEmail = async ({ toEmail, subject, template }: ISendEmail) => {
   try {
+    const resend = new Resend(process.env.RESEND_API_KEY as string);
     const from = process.env.RESEND_FROM_EMAIL as string;
 
     return resend.emails
