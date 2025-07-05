@@ -12,3 +12,13 @@ export async function getUserByClerkUserId(clerkUserId: string) {
 export async function getUserById(id: number) {
   return prisma.user.findFirst({ where: { id } });
 }
+
+export async function checkUserCount(): Promise<boolean> {
+  try {
+    await prisma.user.count();
+    return true;
+  } catch (error: any) {
+    console.error('🔌 User count API failed:', error?.message);
+    return false;
+  }
+}
