@@ -8,7 +8,7 @@ interface ISendEmail {
   template: React.ReactNode;
 }
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const resend = new Resend(process.env.RESEND_API_KEY as string);
 
 export const sendEmail = async ({ toEmail, subject, template }: ISendEmail) => {
   try {
