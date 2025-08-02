@@ -67,3 +67,29 @@ model Transaction {
   @@index([type])
   @@map("transactions")
 }
+
+view UserSummary {
+  userId            Int     @map("user_id")
+  fullName          String  @map("full_name")
+  totalSavings      Decimal @map("total_savings") @db.Decimal
+  totalInterestPaid Decimal @map("total_interest_paid") @db.Decimal
+  totalFinePaid     Decimal @map("total_fine_paid") @db.Decimal
+  remainingLoan     Decimal @map("remaining_loan") @db.Decimal(10, 2)
+
+  @@map("user_summary")
+}
+
+view LoanHistory {
+  id              Int
+  userId          Int             @map("user_id")
+  transactionDate DateTime        @map("transaction_date")
+  createdAt       DateTime        @map("created_at")
+  description     TransactionType
+  remarks         String?
+  amount          Decimal         @db.Decimal(10, 2)
+  remainingLoan   Decimal?        @map("remaining_loan") @db.Decimal(10, 2)
+  totalDays       Int?            @map("total_days")
+  interestAmount  Decimal?        @map("interest_amount") @db.Decimal(10, 2)
+
+  @@map("loan_history")
+}
