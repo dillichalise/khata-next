@@ -10,6 +10,7 @@ import { NuqsAdapter } from 'nuqs/adapters/next/app';
 import './globals.css';
 import './theme.css';
 import { QueryProvider } from '@/app/containers/query-provider';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 
 const META_THEME_COLORS = {
   light: '#ffffff',
@@ -70,6 +71,7 @@ export default async function RootLayout({
               <Providers activeThemeValue={activeThemeValue as string}>
                 <Toaster />
                 {children}
+                <SpeedInsights />
               </Providers>
             </ThemeProvider>
           </NuqsAdapter>
