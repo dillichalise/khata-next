@@ -69,7 +69,7 @@ model Transaction {
 }
 
 view UserSummary {
-  userId            Int     @unique @map("user_id")
+  userId            Int     @id @map("user_id")
   fullName          String  @map("full_name")
   totalSavings      Decimal @map("total_savings") @db.Decimal
   totalInterestPaid Decimal @map("total_interest_paid") @db.Decimal
@@ -80,7 +80,7 @@ view UserSummary {
 }
 
 view LoanHistory {
-  id              Int             @id @default(autoincrement())
+  id              Int             @id
   userId          Int             @map("user_id")
   transactionDate DateTime        @map("transaction_date")
   createdAt       DateTime        @map("created_at")
