@@ -1,0 +1,22 @@
+# .github/workflows/monthly-cron.yml
+name: Monthly Reminder Cron
+
+on:
+  schedule:
+    # Run at midnight UTC on the 1st day of each month
+    - cron: "0 0 1 * *"
+  workflow_dispatch: # allows manual triggering too
+
+jobs:
+  run-cron:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call Vercel API route with retry
+        run: |
+          curl --retry 1 --retry-delay 30 --fail \
+            -X POST "https://cooperative-khata-obksfferd-dillichalises-projects.vercel.app/api/cron/send-monthly-reminder" \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
+            -H "Content-Type: application/json" \
+            -H "User-Agent: GitHubActionsCron/1.0" \
+            -H "X-Cron-Trigger: true" \
+            -d '{}'
