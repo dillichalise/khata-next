@@ -3,10 +3,13 @@ import { sendEmail } from '@/lib/send';
 import { SendReminderTemplate } from '@/components/email-template';
 import { NextResponse } from 'next/server';
 
-export async function POST(req: Request) {
-  const authHeader = req.headers.get('authorization');
-  if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
-    return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
+export async function GET(request: Request) {
+  console.log('CRON job on Vercel started...');
+
+  // Optional: Add security check (see below)
+  const userAgent = request.headers.get('user-agent');
+  if (userAgent !== 'vercel-cron/1.0') {
+    return NextResponse.json({ message: 'Forbidden' }, { status: 403 });
   }
 
   try {
