@@ -1,12 +1,12 @@
 'use client';
 
-import { User } from '@prisma/client';
+import type { TUserSchema } from '@/schema/user.schema';
 import { ColumnDef } from '@tanstack/react-table';
 import Link from 'next/link';
 import { maskEmail, maskPhoneNumber } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
 
-export const userColumns: ColumnDef<User>[] = [
+export const userColumns: ColumnDef<TUserSchema>[] = [
   {
     header: 'SN',
     cell: ({ row }) => row.index + 1

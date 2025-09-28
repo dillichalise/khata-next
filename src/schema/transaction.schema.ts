@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { userSchema } from '@/schema/user.schema';
-import { TransactionAction, TransactionType } from '@prisma/client';
+import { TransactionAction, TransactionType } from '@/types/prisma-enums';
 
 const TransactionActionEnum = z.enum([
   TransactionAction.DEPOSIT,

@@ -12,12 +12,11 @@ import CreateTransactionForm from './create-transaction-form';
 import { IconPlus } from '@tabler/icons-react';
 import { Button } from '@/components/ui/button';
 import { useUser } from '@/context/user-context';
-import { UserType } from '@prisma/client';
 
 export function AddTransactionDialog() {
   const { user } = useUser();
   const [open, setOpen] = useState(false);
-  const isAdmin = user?.role === UserType.ADMIN;
+  const isAdmin = user?.role === 'ADMIN';
 
   return (
     <Dialog open={open} onOpenChange={setOpen} modal={false}>

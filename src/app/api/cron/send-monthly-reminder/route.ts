@@ -1,5 +1,4 @@
 import { prisma } from '@/db/lib/prisma';
-import { UserStatus } from '@prisma/client';
 import { sendEmail } from '@/lib/send';
 import { SendReminderTemplate } from '@/components/email-template';
 import { NextResponse } from 'next/server';
@@ -12,7 +11,7 @@ export async function POST(req: Request) {
 
   try {
     const users = await prisma.user.findMany({
-      where: { status: UserStatus.ACTIVE }
+      where: { status: 'ACTIVE' }
     });
 
     const emails: string[] = [];

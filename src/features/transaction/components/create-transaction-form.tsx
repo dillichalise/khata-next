@@ -6,7 +6,11 @@ import {
   TCreateTransactionSchema
 } from '@/schema/transaction.schema';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { TransactionAction, TransactionType, UserStatus } from '@prisma/client';
+import {
+  TransactionAction,
+  TransactionType,
+  UserStatus
+} from '@/types/prisma-enums';
 import { Card, CardContent } from '@/components/ui/card';
 import {
   Form,
