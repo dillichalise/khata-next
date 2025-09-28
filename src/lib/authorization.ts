@@ -1,6 +1,6 @@
 import { auth } from '@clerk/nextjs/server';
 import { getAuthenticatedUserData } from '@/lib/get-authenticated-user';
-import { UserType } from '@prisma/client';
+import { UserType } from '@/types/prisma-enums';
 
 export async function checkUserRole() {
   const { userId } = await auth();

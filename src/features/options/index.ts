@@ -1,4 +1,4 @@
-import { TransactionAction, TransactionType } from '@prisma/client';
+import { TransactionAction, TransactionType } from '@/types/prisma-enums';
 
 export const getTransactionTypeOptions = (actionValue: string | undefined) => {
   if (!actionValue) return [];

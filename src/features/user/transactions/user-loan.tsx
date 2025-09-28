@@ -2,7 +2,7 @@
 
 import { useParams } from 'next/navigation';
 import { useTransactionFilters } from '@/features/transaction/lib/use-transaction-search-params';
-import { TransactionType } from '@prisma/client';
+import { TransactionType } from '@/types/prisma-enums';
 import { useQuery } from '@tanstack/react-query';
 import { LOAN_HISTORY } from '@/constants/keys';
 import { getUserLoanHistoryAction } from '@/actions';

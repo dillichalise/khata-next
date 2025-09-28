@@ -1,7 +1,7 @@
 import { getAuthenticatedUserData } from '@/lib/get-authenticated-user';
 import { auth, currentUser } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
-import { UserType } from '@prisma/client';
+import { UserType } from '@/types/prisma-enums';
 import UserForm from '@/features/user/create-user-form';
 
 export default async function PostLoginOperation() {

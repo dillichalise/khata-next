@@ -1,4 +1,4 @@
-import { TransactionType } from '@prisma/client';
+import { TransactionType } from '@/types/prisma-enums';
 
 export const getTransactionTypeColor = (type: TransactionType) => {
   switch (type) {

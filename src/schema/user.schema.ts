@@ -1,4 +1,4 @@
-import { UserStatus, UserType } from '@prisma/client';
+import { UserStatus, UserType } from '@/types/prisma-enums';
 import { z } from 'zod';
 
 // Define enums for role and status

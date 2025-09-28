@@ -1,6 +1,6 @@
 'use client';
 
-import { UserType } from '@prisma/client';
+import type { UserType } from '@/types/prisma-enums';
 import { useForm } from 'react-hook-form';
 import { createUserSchema, TCreateUserSchema } from '@/schema';
 import { zodResolver } from '@hookform/resolvers/zod';

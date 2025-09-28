@@ -7,7 +7,7 @@ import { cookies } from 'next/headers';
 import { getAuthenticatedUserData } from '@/lib/get-authenticated-user';
 import { auth } from '@clerk/nextjs/server';
 import NoAccessPage from '@/app/dashboard/no-access/page';
-import { UserStatus } from '@prisma/client';
+import { UserStatus } from '@/types/prisma-enums';
 import { UserProvider } from '@/context/user-context';
 import MobileNav from '@/components/layout/mobile-nav';
 
