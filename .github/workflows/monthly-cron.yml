@@ -14,7 +14,7 @@ jobs:
       - name: Call Vercel API route with retry
         run: |
           curl --retry 1 --retry-delay 30 --fail \
-            -X POST "https://cooperative-khata.vercel.app/api/cron/send-monthly-reminder" \
+            -X POST "https://cooperative-khata-obksfferd-dillichalises-projects.vercel.app/api/cron/send-monthly-reminder" \
             -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
             -H "Content-Type: application/json" \
             -H "User-Agent: GitHubActionsCron/1.0" \
