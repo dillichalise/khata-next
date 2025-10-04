@@ -97,6 +97,8 @@
     "tailwindcss-animate": "^1.0.7",
     "typescript": "5.7.2",
     "uuid": "^11.1.0",
+    "winston": "^3.18.3",
+    "winston-cloudwatch": "^6.3.0",
     "zod": "^3.24.2",
     "zustand": "^5.0.3"
   },

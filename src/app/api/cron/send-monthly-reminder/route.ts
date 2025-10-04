@@ -2,9 +2,10 @@ import { prisma } from '@/db/lib/prisma';
 import { sendEmail } from '@/lib/send';
 import { SendReminderTemplate } from '@/components/email-template';
 import { NextResponse } from 'next/server';
+import logger from '@/lib/winston';
 
 export async function GET(request: Request) {
-  console.log('CRON job on Vercel started...');
+  logger.info('CRON job on Vercel started...');
 
   // Optional: Add security check (see below)
   const userAgent = request.headers.get('user-agent');
@@ -18,6 +19,8 @@ export async function GET(request: Request) {
     });
 
     const emails: string[] = [];
+    const delay = (ms: number) =>
+      new Promise((resolve) => setTimeout(resolve, ms));
 
     for (const user of users) {
       if (!user.email) continue;
@@ -29,7 +32,12 @@ export async function GET(request: Request) {
           displayName: `${user.firstName || ''} ${user.lastName || ''}`
         })
       });
+
+      logger.info(`Email sent to: ${user.email}`);
       emails.push(user.email);
+
+      // Rate limit: 2 emails per second (500ms delay)
+      await delay(500);
     }
 
     return NextResponse.json({
@@ -37,7 +45,7 @@ export async function GET(request: Request) {
       data: emails
     });
   } catch (error) {
-    console.error('[CRON_ERROR]', error);
+    logger.error(`[CRON_ERROR] --> ${JSON.stringify(error)}`);
     return NextResponse.json({ message: 'Internal error' }, { status: 500 });
   }
 }

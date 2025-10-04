@@ -1,15 +1,16 @@
 import { NextResponse } from 'next/server';
 import { core } from '@/db/core';
+import logger from '@/lib/winston';
 
 export async function GET() {
-  console.log('🏥 Health check started at', new Date().toISOString());
+  logger.info('🏥 Health check started.');
 
   try {
     const databaseStatus = await checkDatabase();
     const apiStatus = await checkExternalAPI();
 
     if (!databaseStatus || !apiStatus) {
-      console.warn('⚠️ Health check failed');
+      logger.warn('⚠️ Health check failed.');
       return NextResponse.json({
         code: 503,
         status: 'fail',
@@ -24,7 +25,7 @@ export async function GET() {
       timestamp: new Date().toISOString()
     });
   } catch (error) {
-    console.error('❌ Health check error:', error);
+    logger.error(`❌ Health check error --> ${JSON.stringify(error)}`);
     return NextResponse.json({ message: 'Internal error' }, { status: 500 });
   }
 }
