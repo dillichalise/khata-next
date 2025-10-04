@@ -1,5 +1,6 @@
 import { prisma } from '@/db/lib/prisma';
 import { TransactionType } from '@prisma/client';
+import logger from '@/lib/winston';
 
 export type TransactionSummary = {
   totalMonthlySavings: number;
@@ -51,7 +52,9 @@ export async function getTransactionSummaryFromUserSummary(): Promise<Transactio
       remainingAmount
     };
   } catch (error) {
-    console.error('Error fetching transaction summary:', error);
+    logger.error(
+      `Error fetching transaction summary --> ${JSON.stringify(error)}`
+    );
     throw new Error('Failed to fetch transaction summary');
   }
 }
