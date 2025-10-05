@@ -29,12 +29,14 @@ export const createUserSchema = userSchema.pick({
   role: true
 });
 
-export const updateUserSchema = userSchema.partial({
-  id: true,
-  firstName: true,
-  lastName: true,
-  status: true
-});
+export const updateUserSchema = userSchema
+  .pick({
+    id: true,
+    firstName: true,
+    lastName: true,
+    status: true
+  })
+  .partial();
 
 export const getUserListSchema = userSchema
   .pick({
