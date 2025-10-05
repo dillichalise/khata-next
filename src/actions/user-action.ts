@@ -7,6 +7,7 @@ import {
   updateUserSchema
 } from '@/schema';
 import { core } from '@/db/core';
+import { checkUserRole } from '@/lib/authorization';
 
 export const createUserAction = authActionClient
   .schema(createUserSchema)
@@ -25,3 +26,7 @@ export const getAllUsersAction = authActionClient
   .action(async ({ parsedInput }) => {
     return core.user.getAllUsers(parsedInput);
   });
+
+export const getCurrentUserRoleAction = authActionClient.action(async () => {
+  return checkUserRole();
+});
