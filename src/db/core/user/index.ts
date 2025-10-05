@@ -21,6 +21,10 @@ export function getAllUsers(data: TGetUserListSchema) {
   return db.users.getAllUsers(data);
 }
 
+export async function getUserDetails(userId: number) {
+  return await db.users.getUserById(userId);
+}
+
 export function getUserCountHealth(): Promise<boolean> {
   return db.users.checkUserCount();
 }

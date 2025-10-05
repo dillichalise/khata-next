@@ -8,6 +8,7 @@ import {
 } from '@/schema';
 import { core } from '@/db/core';
 import { checkUserRole } from '@/lib/authorization';
+import { z } from 'zod';
 
 export const createUserAction = authActionClient
   .schema(createUserSchema)
@@ -25,6 +26,12 @@ export const getAllUsersAction = authActionClient
   .schema(getUserListSchema)
   .action(async ({ parsedInput }) => {
     return core.user.getAllUsers(parsedInput);
+  });
+
+export const getUserDetailAction = authActionClient
+  .schema(z.object({ userId: z.number() }))
+  .action(async ({ parsedInput }) => {
+    return core.user.getUserDetails(parsedInput.userId);
   });
 
 export const getCurrentUserRoleAction = authActionClient.action(async () => {

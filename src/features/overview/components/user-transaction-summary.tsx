@@ -22,7 +22,6 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 
 export function UserTransactionSummary() {
@@ -93,7 +92,7 @@ export function UserTransactionSummary() {
                     <div>
                       <CardTitle className='text-base'>
                         <Link
-                          href={`/user/${user.userId}`}
+                          href={`/dashboard/user/${user.userId}`}
                           className='text-primary flex items-center gap-1 hover:underline'
                         >
                           {user.fullName}
@@ -102,7 +101,6 @@ export function UserTransactionSummary() {
                       </CardTitle>
                     </div>
                   </div>
-                  <Badge variant='secondary'>ACTIVE</Badge>
                 </div>
               </CardHeader>
               <CardContent className='space-y-3'>
@@ -150,7 +148,9 @@ export function UserTransactionSummary() {
                   </div>
                 </div>
                 <Button asChild variant='outline' size='sm' className='w-full'>
-                  <Link href={`/user/${user.userId}`}>View Details</Link>
+                  <Link href={`/dashboard/user/${user.userId}`}>
+                    View Details
+                  </Link>
                 </Button>
               </CardContent>
             </Card>
