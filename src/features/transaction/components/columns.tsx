@@ -4,6 +4,7 @@ import { ColumnDef } from '@tanstack/react-table';
 import { format } from 'date-fns';
 import { TTransactionSchema } from '@/schema/transaction.schema';
 import { Badge } from '@/components/ui/badge';
+import Link from 'next/link';
 
 const getTypeColor = (type: string) => {
   switch (type) {
@@ -43,7 +44,10 @@ export const columns: ColumnDef<TTransactionSchema>[] = [
     header: 'Name',
     cell: ({ row }) => {
       return (
-        <div>{`${row.original?.user?.firstName} ${row.original?.user?.lastName}`}</div>
+        <Link
+          className='hover:text-blue-400 hover:underline'
+          href={`/dashboard/user/${row.original?.userId}`}
+        >{`${row.original?.user?.firstName} ${row.original?.user?.lastName}`}</Link>
       );
     }
   },

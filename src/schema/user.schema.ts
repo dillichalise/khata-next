@@ -29,6 +29,15 @@ export const createUserSchema = userSchema.pick({
   role: true
 });
 
+export const updateUserSchema = userSchema
+  .pick({
+    id: true,
+    firstName: true,
+    lastName: true,
+    status: true
+  })
+  .partial();
+
 export const getUserListSchema = userSchema
   .pick({
     status: true,
@@ -59,6 +68,8 @@ export const overallTransactionSummarySchema = z.object({
 export type TUserSchema = z.infer<typeof userSchema>;
 
 export type TCreateUserSchema = z.infer<typeof createUserSchema>;
+
+export type TUpdateUserSchema = z.infer<typeof updateUserSchema>;
 
 export type TGetUserListSchema = z.infer<typeof getUserListSchema>;
 
