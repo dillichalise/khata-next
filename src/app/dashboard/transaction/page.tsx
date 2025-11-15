@@ -1,6 +1,12 @@
 import { Heading } from '@/components/ui/heading';
 import TransactionList from '@/features/transaction/transaction-list';
 import { AddTransactionDialog } from '@/features/transaction/components/add-transaction-dialog';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Khata Transactions',
+  description: 'Transaction List'
+};
 
 export default async function TransactionPage() {
   return (

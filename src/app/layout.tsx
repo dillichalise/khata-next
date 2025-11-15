@@ -11,6 +11,7 @@ import './globals.css';
 import './theme.css';
 import { QueryProvider } from '@/app/containers/query-provider';
 import { SpeedInsights } from '@vercel/speed-insights/next';
+import { PWARegister } from '@/components/pwa-register';
 
 const META_THEME_COLORS = {
   light: '#ffffff',
@@ -18,12 +19,26 @@ const META_THEME_COLORS = {
 };
 
 export const metadata: Metadata = {
-  title: 'Next Shadcn',
-  description: 'Basic dashboard with Next.js and Shadcn'
+  title: 'Next Khata',
+  description: 'Khata dashboard with savings and transactions.',
+  manifest: '/manifest.json',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+    title: 'Khata'
+  },
+  icons: {
+    apple: '/icon-192x192.png'
+  }
 };
 
 export const viewport: Viewport = {
-  themeColor: META_THEME_COLORS.light
+  themeColor: META_THEME_COLORS.light,
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  viewportFit: 'cover'
 };
 
 export default async function RootLayout({
@@ -38,6 +53,10 @@ export default async function RootLayout({
   return (
     <html lang='en' suppressHydrationWarning>
       <head>
+        <link rel='manifest' href='/manifest.json' />
+        <meta name='mobile-web-app-capable' content='yes' />
+        <meta name='apple-mobile-web-app-capable' content='yes' />
+        <meta name='apple-mobile-web-app-status-bar-style' content='default' />
         <script
           dangerouslySetInnerHTML={{
             __html: `
@@ -49,6 +68,7 @@ export default async function RootLayout({
             `
           }}
         />
+        <title>Next Khata</title>
       </head>
       <body
         className={cn(
@@ -69,6 +89,7 @@ export default async function RootLayout({
               enableColorScheme
             >
               <Providers activeThemeValue={activeThemeValue as string}>
+                <PWARegister />
                 <Toaster />
                 {children}
                 <SpeedInsights />

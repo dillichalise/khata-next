@@ -1,0 +1,11 @@
+# PWA Icons Required
+# 
+# Please add the following icon files to this directory:
+# - icon-192x192.png (192x192 pixels)
+# - icon-512x512.png (512x512 pixels)
+#
+# These icons will be used for the PWA manifest and app installation.
+# You can generate them from a single source image using tools like:
+# - https://realfavicongenerator.net/
+# - https://www.pwabuilder.com/imageGenerator
+
