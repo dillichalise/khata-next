@@ -12,8 +12,8 @@ import { UserProvider } from '@/context/user-context';
 import MobileNav from '@/components/layout/mobile-nav';
 
 export const metadata: Metadata = {
-  title: 'Next Shadcn Dashboard Starter',
-  description: 'Basic dashboard with Next.js and Shadcn'
+  title: 'Khata Dashboard',
+  description: 'Basic dashboard with Summary'
 };
 
 export default async function DashboardLayout({
