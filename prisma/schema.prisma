@@ -68,6 +68,17 @@ model Transaction {
   @@map("transactions")
 }
 
+model SagarTransaction {
+  id        Int               @id @default(autoincrement())
+  date      DateTime
+  type      TransactionAction
+  amount    Decimal           @db.Decimal(10, 2)
+  remarks   String
+  createdAt DateTime          @default(now()) @map("created_at")
+
+  @@map("sagar_transactions")
+}
+
 view UserSummary {
   userId            Int     @map("user_id")
   fullName          String  @map("full_name")
