@@ -22,7 +22,7 @@ export default function UserAccountSummary({ userId }: { userId?: number }) {
   const hasOutstandingInterest = userInfo.totalInterest > 0;
 
   return (
-    <div className='mr-6 mb-4 flex flex-col gap-2 text-lg font-semibold'>
+    <div className='my-4 flex flex-col gap-2 text-lg font-semibold'>
       {/* Account Status Cards */}
       <div className='grid gap-3'>
         {hasOutstandingLoan && (
