@@ -33,10 +33,6 @@ export const columns: ColumnDef<TSagarTransactionSchema>[] = [
       row.original.date ? format(row.original.date, 'PP') : null
   },
   {
-    accessorKey: 'remarks',
-    header: 'Description'
-  },
-  {
     accessorKey: 'amount',
     header: 'Amount',
     cell: ({ row }) => {
@@ -69,5 +65,9 @@ export const columns: ColumnDef<TSagarTransactionSchema>[] = [
         </Badge>
       );
     }
+  },
+  {
+    accessorKey: 'remarks',
+    header: 'Description'
   }
 ];

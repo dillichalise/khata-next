@@ -17,9 +17,10 @@ export function AddSagarTransactionDialog() {
   const { user } = useUser();
   const [open, setOpen] = useState(false);
 
-  const isAdmin = user?.role === 'ADMIN';
+  const canAccess =
+    user?.role === 'ADMIN' && user?.email === 'dillichalise@gmail.com';
 
-  if (!isAdmin) return null;
+  if (!canAccess) return null;
 
   return (
     <Dialog open={open} onOpenChange={setOpen} modal={false}>
