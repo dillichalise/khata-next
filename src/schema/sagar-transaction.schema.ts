@@ -17,7 +17,8 @@ export const sagarTransactionSchema = z.object({
 
 export const SagarTransactionPagination = z.object({
   transactions: sagarTransactionSchema.array().nullish(),
-  total: z.number()
+  total: z.number(),
+  difference: z.number()
 });
 
 export const createSagarTransactionSchema = sagarTransactionSchema.pick({
