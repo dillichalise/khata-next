@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { DataTable } from '@/components/ui/table/data-table';
 import { DataTableSkeleton } from '@/components/ui/table/data-table-skeleton';
 import { SAGAR_TRANSACTIONS } from '@/constants/keys';
-import { columns } from '@/features/sagar-transaction/components/columns';
+import { columns } from '@/features/external-transaction/components/columns';
 import { getAllSagarTransactionsAction } from '@/actions';
 import { TSagarTransactionSchema } from '@/schema/sagar-transaction.schema';
 import {
@@ -16,7 +16,7 @@ import {
 import { formatCurrency } from '@/lib/format-currency';
 import { Minus, TrendingDown, TrendingUp } from 'lucide-react';
 
-export default function SagarTransactionList() {
+export default function ExternalTransactionList() {
   const { data, isLoading } = useQuery({
     queryKey: [SAGAR_TRANSACTIONS],
     queryFn: () => getAllSagarTransactionsAction()

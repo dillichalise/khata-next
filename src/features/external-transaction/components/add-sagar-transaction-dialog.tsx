@@ -11,7 +11,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { IconPlus } from '@tabler/icons-react';
 import { useUser } from '@/context/user-context';
-import CreateSagarTransactionForm from '@/features/sagar-transaction/components/create-sagar-transaction-form';
+import CreateSagarTransactionForm from '@/features/external-transaction/components/create-sagar-transaction-form';
 
 export function AddSagarTransactionDialog() {
   const { user } = useUser();

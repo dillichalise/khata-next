@@ -3,6 +3,10 @@
 import PageContainer from '@/components/layout/page-container';
 import React from 'react';
 import { useUser } from '@/context/user-context';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
+import { cn } from '@/lib/utils';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 export default function OverViewLayout({
   overall_transaction_summary,
@@ -12,6 +16,7 @@ export default function OverViewLayout({
   user_account_summary: React.ReactNode;
 }) {
   const { user } = useUser();
+  const isMobile = useIsMobile();
 
   return (
     <PageContainer scrollable>
@@ -21,6 +26,15 @@ export default function OverViewLayout({
             Hi {user?.firstName}, Welcome back 👋
           </h2>
         </div>
+        {(user?.email === 'sagarfullel@gmail.com' ||
+          user?.email === 'dillichalise@gmail.com') && (
+          <Link
+            className={cn(isMobile && 'flex flex-col')}
+            href='/dashboard/external-transaction'
+          >
+            <Button variant='outline'>View External Transaction</Button>
+          </Link>
+        )}
 
         <div>{user_account_summary}</div>
         <div className='mb-4'>{overall_transaction_summary}</div>

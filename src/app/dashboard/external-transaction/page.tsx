@@ -1,8 +1,8 @@
 import { Heading } from '@/components/ui/heading';
-import SagarTransactionList from '@/features/sagar-transaction/sagar-transaction-list';
-import { AddSagarTransactionDialog } from '@/features/sagar-transaction/components/add-sagar-transaction-dialog';
+import ExternalTransactionList from '@/features/external-transaction/external-transaction-list';
+import { AddSagarTransactionDialog } from '@/features/external-transaction/components/add-sagar-transaction-dialog';
 
-export default async function SagarTransactionPage() {
+export default async function ExternalTransactionPage() {
   return (
     <div className='container mx-auto px-4 py-8'>
       <div className='flex flex-1 flex-col space-y-4'>
@@ -13,7 +13,7 @@ export default async function SagarTransactionPage() {
           />
           <AddSagarTransactionDialog />
         </div>
-        <SagarTransactionList />
+        <ExternalTransactionList />
       </div>
     </div>
   );
