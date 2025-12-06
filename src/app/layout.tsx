@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     title: 'Khata'
   },
   icons: {
-    apple: '/icon-192x192.png'
+    apple: '/apple-touch-icon.png'
   }
 };
 
@@ -54,6 +54,12 @@ export default async function RootLayout({
     <html lang='en' suppressHydrationWarning>
       <head>
         <link rel='manifest' href='/manifest.json' />
+        <link
+          rel='apple-touch-icon'
+          sizes='180x180'
+          href='/apple-touch-icon.png'
+        />
+
         <link rel='apple-touch-icon' href='/icon-192x192.png' />
         <link rel='apple-touch-icon' sizes='192x192' href='/icon-192x192.png' />
         <link rel='apple-touch-icon' sizes='512x512' href='/icon-512x512.png' />
