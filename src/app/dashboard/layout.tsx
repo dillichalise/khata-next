@@ -10,6 +10,8 @@ import NoAccessPage from '@/app/dashboard/no-access/page';
 import { UserStatus } from '@/types/prisma-enums';
 import { UserProvider } from '@/context/user-context';
 import MobileNav from '@/components/layout/mobile-nav';
+import { PostHogProvider } from '@/hooks/use-posthog';
+import React from 'react';
 
 export const metadata: Metadata = {
   title: 'Khata Dashboard',
@@ -29,22 +31,24 @@ export default async function DashboardLayout({
 
   return (
     <KBar>
-      <SidebarProvider defaultOpen={defaultOpen}>
-        <AppSidebar />
-        <SidebarInset>
-          <Header />
-          <UserProvider user={user}>
-            {/* page main content */}
-            {user && user.status === UserStatus.ACTIVE ? (
-              <div className='pb-12'>{children}</div>
-            ) : (
-              <NoAccessPage />
-            )}
-            <MobileNav />
-            {/* page main content ends */}
-          </UserProvider>
-        </SidebarInset>
-      </SidebarProvider>
+      <PostHogProvider user={user}>
+        <SidebarProvider defaultOpen={defaultOpen}>
+          <AppSidebar />
+          <SidebarInset>
+            <Header />
+            <UserProvider user={user}>
+              {/* page main content */}
+              {user && user.status === UserStatus.ACTIVE ? (
+                <div className='pb-12'>{children}</div>
+              ) : (
+                <NoAccessPage />
+              )}
+              <MobileNav />
+              {/* page main content ends */}
+            </UserProvider>
+          </SidebarInset>
+        </SidebarProvider>
+      </PostHogProvider>
     </KBar>
   );
 }

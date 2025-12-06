@@ -16,6 +16,9 @@ const nextConfig: NextConfig = {
     ]
   },
   transpilePackages: ['geist'],
+  // This is required to support PostHog trailing slash API requests
+  skipTrailingSlashRedirect: true,
+
   // Ensure service worker and manifest are served correctly
   async headers() {
     return [
@@ -40,6 +43,19 @@ const nextConfig: NextConfig = {
             value: 'application/manifest+json'
           }
         ]
+      }
+    ];
+  },
+
+  async rewrites() {
+    return [
+      {
+        source: '/ingest/static/:path*',
+        destination: 'https://eu-assets.i.posthog.com/static/:path*'
+      },
+      {
+        source: '/ingest/:path*',
+        destination: 'https://eu.i.posthog.com/:path*'
       }
     ];
   }
