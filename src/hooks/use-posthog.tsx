@@ -14,7 +14,10 @@ export function PostHogProvider({
   const initialized = useRef(false);
 
   useEffect(() => {
-    if (!process.env.NEXT_PUBLIC_POSTHOG_KEY!) {
+    if (
+      !process.env.NEXT_PUBLIC_POSTHOG_KEY! ||
+      process.env.NODE_ENV !== 'production'
+    ) {
       return;
     }
 
@@ -25,11 +28,6 @@ export function PostHogProvider({
           process.env.NEXT_PUBLIC_POSTHOG_HOST! || 'https://eu.i.posthog.com',
         session_recording: {
           recordCrossOriginIframes: false
-        },
-        loaded: (posthog) => {
-          if (process.env.NODE_ENV === 'development') {
-            console.log('PostHog initialized successfully');
-          }
         }
       });
       initialized.current = true;
