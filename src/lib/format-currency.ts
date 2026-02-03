@@ -1,11 +1,11 @@
-const currencyFormatter = new Intl.NumberFormat('jp', {
+const currencyFormatter = new Intl.NumberFormat('ja-JP', {
   style: 'currency',
   currency: 'JPY',
   minimumFractionDigits: 0,
-  maximumFractionDigits: 2
+  maximumFractionDigits: 0
 });
 
 export function formatCurrency(amount: number | undefined): string {
-  if (!Number.isFinite(amount)) return '';
-  return currencyFormatter.format(amount ?? 'Infinity');
+  if (typeof amount !== 'number' || !Number.isFinite(amount)) return '';
+  return currencyFormatter.format(amount);
 }
