@@ -11,14 +11,16 @@ export async function getAllTransactions({
 }: TListTransactionSchema) {
   const skip = (page - 1) * limit;
 
-  const transactions = await prisma.transaction.findMany({
-    skip,
-    take: limit,
-    orderBy: { createdAt: 'desc' },
-    include: { user: true }
-  });
+  const [transactions, total] = await Promise.all([
+    prisma.transaction.findMany({
+      skip,
+      take: limit,
+      orderBy: { createdAt: 'desc' },
+      include: { user: true }
+    }),
+    prisma.transaction.count()
+  ]);
 
-  const total = await prisma.transaction.count();
   return { transactions, total };
 }
 
@@ -43,16 +45,16 @@ export async function getUserTransactions({
           }
   };
 
-  const transactions = await prisma.transaction.findMany({
-    where: filters,
-    skip,
-    take: limit,
-    orderBy: { date: 'desc' }
-  });
+  const [transactions, total] = await Promise.all([
+    prisma.transaction.findMany({
+      where: filters,
+      skip,
+      take: limit,
+      orderBy: { date: 'desc' }
+    }),
+    prisma.transaction.count({ where: filters })
+  ]);
 
-  const total = await prisma.transaction.count({
-    where: filters
-  });
   return { transactions, total };
 }
 

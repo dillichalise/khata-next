@@ -12,12 +12,12 @@ export function getTransactionSummary() {
   return db.summary.getTransactionSummaryFromUserSummary();
 }
 export async function getUserSummary(userId: number, toDate?: Date) {
-  const user = await db.users.getUserById(userId);
-
   const today = toDate ? new Date(toDate) : new Date();
 
-  const latestInterestPaidData =
-    await db.summary.getLatestInterestPaidData(userId);
+  const [user, latestInterestPaidData] = await Promise.all([
+    db.users.getUserById(userId),
+    db.summary.getLatestInterestPaidData(userId)
+  ]);
 
   let interestToPay = 0.0;
   let remainingLoan: number;

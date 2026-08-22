@@ -2,13 +2,11 @@ import { prisma } from '@/db/lib/prisma';
 import { TransactionAction } from '@prisma/client';
 
 export async function getAllSagarTransactions() {
-  const transactions = await prisma.sagarTransaction.findMany({
-    orderBy: { date: 'desc' }
-  });
-
-  const total = await prisma.sagarTransaction.count();
-
-  const [depositAgg, withdrawAgg] = await Promise.all([
+  const [transactions, total, depositAgg, withdrawAgg] = await Promise.all([
+    prisma.sagarTransaction.findMany({
+      orderBy: { date: 'desc' }
+    }),
+    prisma.sagarTransaction.count(),
     prisma.sagarTransaction.aggregate({
       _sum: { amount: true },
       where: { type: TransactionAction.DEPOSIT }
